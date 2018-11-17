@@ -64,8 +64,13 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
   seed[,'Cover'][seed[,'Cover']==8]<-85
   seed[,'Cover'][seed[,'Cover']==9]<-97.5
 
-  seed.wide<-seed %>% spread(Quadrat, Cover, fill=0) %>% select(-13,-27) %>%
+  seed2<-seed %>% group_by(Event_ID,Quadrat,TSN) %>% summarize(numQuadrats=first(numQuadrats),Cover=sum(Cover)) %>%
+    left_join(park.plots,.,by="Event_ID")
+  head(seed2)
+
+  seed.wide<-seed2 %>% spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
     mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
+  seed.wide<-seed.wide[,c(1:11,13,12,14:26)]
 
   quad.comb<-rbind(quads3,seed.wide)
   quad.comb2<-merge(quad.comb,plants[,c('TSN',"Latin_Name","Common","Tree","Shrub","Vine","Graminoid","Herbaceous","Exotic")],
