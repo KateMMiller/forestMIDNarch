@@ -44,7 +44,7 @@ joinTreeData<-function(status='all',speciesType='all',park='all',from=2007,to=20
   } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
     stop("speciesType must be either 'native','exotic', or 'all'")}
 
-  park.plots2<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, output='short'))
+  park.plots2<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, rejected=F,output='short'))
 
   tree5<-merge(park.plots2, tree4, by='Event_ID', all.x=T)
   tree5<-droplevels(tree5)

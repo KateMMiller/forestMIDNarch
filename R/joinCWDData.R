@@ -18,7 +18,7 @@
 #------------------------
 joinCWDData<-function(units='ha', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', output){
   # Prepare the CWD data
-  park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, output='short'))
+  park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType,rejected=F, output='short'))
   cwd1<-merge(park.plots,cwd,by='Event_ID', all.x=T,all.y=F)
   cwd2<-merge(cwd1[,c("Event_ID","TSN","Diameter","Decay_Class_ID","Hollow","Transect","Distance","Wood_Type")],
     plants[,c('TSN','Latin_Name','Common')], by='TSN',all.x=T)

@@ -35,7 +35,7 @@
 # Joins quadrat and microplot tables and filters by park, year, and plot/visit type
 #------------------------
 joinRegenData<-function(speciesType='all', canopyForm='canopy', units='sq.m', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', height='ht15', output){
-  park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, output='short'))
+  park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, rejected=F, output='short'))
 
 # Prepare the seedling data
   quad1<-merge(park.plots,quadsamp[,1:14], all.x=T)

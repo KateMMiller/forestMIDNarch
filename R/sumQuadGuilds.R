@@ -18,10 +18,9 @@
 # Joins quadrat tables and filters by park, year, and plot/visit type
 #------------------------
 
-# NEED TO FIX joinQUADDATA so that quad names are included for calculating quadrat frequency
 sumQuadGuilds<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', output,...){
   # Prepare the quadrat data
-  park.plots<-force(joinLocEvent(park=park,from=from,to=to,QAQC=QAQC,locType=locType,output='short'))
+  park.plots<-force(joinLocEvent(park=park,from=from,to=to,QAQC=QAQC,locType=locType,rejected=F,output='short'))
   quads1<-force(joinQuadData(park=park, from=from,to=to,QAQC=QAQC,locType=locType,speciesType=speciesType,
     output='short'))
   quads1<-quads1 %>% mutate(Shrub=ifelse(Shrub+Vine>0,1,0)) %>% select(-Vine)

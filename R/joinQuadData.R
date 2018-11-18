@@ -49,8 +49,9 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
 
   quads2[,c(14:25)][is.na(quads2[,c(14:25)])]<-0
   quads3<-quads2 %>% mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats) #%>% select(Event_ID:TSN,avg.cover)
+  quads3[,c(14:25)][quads3[,c(14:25)]>0]<-1
+  quads3<-quads3 %>% mutate(avg.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
-  #length(unique(quads3$Plot_Name))#370
   # Now to add the tree seedling cover data
   seed<-merge(quads1,sdlg[,c(1:4,11)], by=c("Event_ID"),all.x=T)
   seed[,"Cover"][is.na(seed[,"Cover"])]<-0
@@ -66,11 +67,12 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
 
   seed2<-seed %>% group_by(Event_ID,Quadrat,TSN) %>% summarize(numQuadrats=first(numQuadrats),Cover=sum(Cover)) %>%
     left_join(park.plots,.,by="Event_ID")
-  head(seed2)
 
   seed.wide<-seed2 %>% spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
     mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
   seed.wide<-seed.wide[,c(1:11,13,12,14:26)]
+  seed.wide[,14:25][seed.wide[,14:25]>0]<-1
+  seed.wide<-seed.wide %>% mutate(avg.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
   quad.comb<-rbind(quads3,seed.wide)
   quad.comb2<-merge(quad.comb,plants[,c('TSN',"Latin_Name","Common","Tree","Shrub","Vine","Graminoid","Herbaceous","Exotic")],
@@ -82,7 +84,7 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
     } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
       stop("speciesType must be either 'native','exotic', or 'all'")}
 
-  quad.comb4<-quad.comb3 %>% mutate(avg.cover=ifelse(TSN==-9999999951,0,avg.cover))
+  quad.comb4<-quad.comb3 %>% mutate(avg.cover=ifelse(TSN==-9999999951,0,avg.cover),avg.freq=ifelse(TSN==-9999999951,0,avg.freq))
 
   return(data.frame(quad.comb4))
 } # end of function
