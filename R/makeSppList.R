@@ -63,8 +63,8 @@ makeSppList<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FAL
 
   comb8<-merge(park.plots,comb7,by="Event_ID",all.x=T,all.y=F)
 
-  colnames(comb8)<-c("TSN","Event_ID","Location_ID","Unit_Code","Plot_Name","Plot_Number","X_Coord","Y_Coord","Panel",
-    "Year","Event_QAQC","cycle","tree.stems","tree.BAcm2","seed.den","sap.den","stocking.index","avg.quad.cover",
+  colnames(comb8)<-c("Event_ID","Location_ID","Unit_Code","Plot_Name","Plot_Number","X_Coord","Y_Coord","Panel",
+    "Year","Event_QAQC","cycle","TSN","tree.stems","tree.BAcm2","seed.den","sap.den","stocking.index","avg.quad.cover",
     "avg.quad.freq","shrub.present.old","shrub.cover","addspp.present","Latin_Name","Common","Exotic","Tree","Shrub",
     "Herbaceous","Graminoid")
 
