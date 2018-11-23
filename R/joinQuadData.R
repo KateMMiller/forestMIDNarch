@@ -75,7 +75,8 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
   seed.wide<-seed.wide %>% mutate(avg.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
   quad.comb<-rbind(quads3,seed.wide)
-  quad.comb2<-merge(quad.comb,plants[,c('TSN',"Latin_Name","Common","Tree","Shrub","Vine","Graminoid","Herbaceous","Exotic")],
+  quad.comb2<-merge(quad.comb,plants[,c('TSN',"Latin_Name","Common","Tree","Shrub","Vine","Graminoid","Herbaceous",
+    "Fern_Ally","Exotic")],
     by="TSN", all.x=T)
 
   quad.comb3<-if (speciesType=='native'){filter(quad.comb2,Exotic==FALSE)
@@ -84,7 +85,8 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
     } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
       stop("speciesType must be either 'native','exotic', or 'all'")}
 
-  quad.comb4<-quad.comb3 %>% mutate(avg.cover=ifelse(TSN==-9999999951,0,avg.cover),avg.freq=ifelse(TSN==-9999999951,0,avg.freq))
+  quad.comb4<-quad.comb3 %>% mutate(avg.cover=ifelse(TSN==-9999999951,0,avg.cover),
+    avg.freq=ifelse(TSN==-9999999951,0,avg.freq))
 
   return(data.frame(quad.comb4))
 } # end of function
