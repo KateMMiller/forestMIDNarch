@@ -32,13 +32,15 @@ sumQuadGuilds<-function(speciesType='native', park='all',from=2006, to=2018, QAQ
 
   # gather to get every combination of plot visit and guild
   quads3<-quads2 %>% group_by(Event_ID,Tree,Shrub,Herbaceous,Graminoid) %>% summarise(avg.cover=sum(avg.cover),
-    avg.freq=(ifelse(sum(A2)>1,1,0)+ifelse(sum(A5)>0,1,0)+ifelse(sum(A8)>0,1,0)+ifelse(sum(AA)>0,1,0)+
-        ifelse(sum(B2)>0,1,0)+ifelse(sum(B5)>0,1,0)+ifelse(sum(B8)>0,1,0)+ifelse(sum(BB)>0,1,0)+
-        ifelse(sum(C2)>0,1,0)+ifelse(sum(C5)>0,1,0)+ifelse(sum(C8)>0,1,0)+ifelse(sum(CC)>0,1,0))/first(numQuadrats)) %>%
+    A2=ifelse(sum(A2)>0,1,0),A5=ifelse(sum(A5)>0,1,0),A8=ifelse(sum(A8)>0,1,0),AA=ifelse(sum(AA)>0,1,0),
+    B2=ifelse(sum(B2)>0,1,0),B5=ifelse(sum(B5)>0,1,0),B8=ifelse(sum(B8)>0,1,0),BB=ifelse(sum(BB)>0,1,0),
+    C2=ifelse(sum(C2)>0,1,0),C5=ifelse(sum(C5)>0,1,0),C8=ifelse(sum(C8)>0,1,0),CC=ifelse(sum(CC)>0,1,0),
+    avg.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/first(numQuadrats)) %>%
     mutate(guild= case_when(Tree == 1 ~ 'Tree',
       Shrub == 1 ~ 'Shrub',
       Herbaceous == 1 ~ 'Herbaceous',
-      Graminoid == 1 ~ 'Graminoid')) %>% ungroup() %>% select(-(Tree:Graminoid))
+      Graminoid == 1 ~ 'Graminoid')) %>% ungroup() %>% select(Event_ID,guild,avg.cover,avg.freq)
+
   quads3$guild<-as.factor(quads3$guild)
 
   park.plots2<-park.plots %>% mutate(Graminoid=1,Herbaceous=1,Shrub=1,Tree=1) %>%
