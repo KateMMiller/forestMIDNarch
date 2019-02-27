@@ -16,7 +16,11 @@
 #------------------------
 # Joins microplot tables and filters by park, year, and plot/visit type
 #------------------------
-joinMicroShrubData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', output){
+joinMicroShrubData<-function(speciesType=c('all','native','exotic'), park='all',from=2007, to=2018,
+  QAQC=FALSE, locType='VS', output){
+
+  speciesType<-match.arg(speciesType)
+
   park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, rejected=F,output='short'))
 
   # Prepare the sapling data
@@ -49,8 +53,7 @@ joinMicroShrubData<-function(speciesType='all', park='all',from=2007, to=2018, Q
   shrub5<- if (speciesType=='native'){filter(shrub4,Exotic==FALSE)
   } else if (speciesType=='exotic'){filter(shrub4,Exotic==TRUE)
   } else if (speciesType=='all'){(shrub4)
-  } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
-    stop("speciesType must be either 'native','exotic', or 'all'")}
+  }
 
   shrub6<-merge(park.plots,shrub5[,c("Event_ID","TSN","Latin_Name","Common","Exotic","present.old","cover")],by="Event_ID",all.x=T)
 

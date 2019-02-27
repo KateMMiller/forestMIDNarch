@@ -34,7 +34,15 @@
 #------------------------
 # Joins quadrat and microplot tables and filters by park, year, and plot/visit type
 #------------------------
-joinRegenData<-function(speciesType='all', canopyForm='canopy', units='sq.m', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', height='ht15', output){
+joinRegenData<-function(speciesType=c('all','native','exotic'), canopyForm=c('canopy','all'),
+  units=c('sq.m','ha','acres'), park='all',from=2007, to=2018, QAQC=FALSE, locType='VS',
+  height=c('ht15','all'), output){
+
+  speciesType<-match.arg(speciesType)
+  canopyForm<-match.arg(canopyForm)
+  units<-match.arg(units)
+  height<-match.arg(height)
+
   park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, rejected=F, output='short'))
 
 # Prepare the seedling data
@@ -42,6 +50,7 @@ joinRegenData<-function(speciesType='all', canopyForm='canopy', units='sq.m', pa
   quad1$NumQuads<-rowSums(quad1[,13:24])
   seed<-merge(quad1[,c(1:11,25)],sdlg[,c(1:4,6:12)], by="Event_ID",all.x=T)
   seed[,16:21][is.na(seed[,16:21])]<-0
+  seed$Cover<-as.numeric(seed$Cover)
 
   seed2<- if(height=='ht15'){
     seed %>% group_by(Event_ID,TSN) %>%
@@ -91,13 +100,12 @@ joinRegenData<-function(speciesType='all', canopyForm='canopy', units='sq.m', pa
 
   regen4<-if(canopyForm=='canopy'){filter(regen3, Canopy_Exclusion!=1)
   } else if(canopyForm=='all'){(regen3)
-  } else if(canopyForm!='all'|canopyForm!='canopy'){stop("canopyForm must be either 'all' or 'canopy'")}
+  }
 
   regen5<- if (speciesType=='native'){filter(regen4,Exotic==FALSE)
   } else if (speciesType=='exotic'){filter(regen4,Exotic==TRUE)
   } else if (speciesType=='all'){(regen4)
-  } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
-    stop("speciesType must be either 'native','exotic', or 'all'")}
+  }
 
   regen5[,14:22][is.na(regen5[,14:22])]<-0
   regen5<-regen5 %>% mutate(stock=seed.stock+sap.stock) %>% select(-seed.stock,-sap.stock)
@@ -126,9 +134,7 @@ joinRegenData<-function(speciesType='all', canopyForm='canopy', units='sq.m', pa
         seed150p=seed150pm2*4046.856,
         seed.den=seed.dens.m2*4046.856,
         sap.den=sap.dens.m2*4046.856)
-    } else if (units!='ha'|units!='acres'|units!='sq.m'){
-      stop("units must be 'ha','acres',or 'sq.m'")
-  }
+    }
 
   regen7<-regen6 %>% select(Event_ID,TSN,Latin_Name,Common,Exotic,Canopy_Exclusion,seed15.30,
     seed30.100,seed100.150, seed150p,seed.den,sap.den,stock,avg.cover) %>% droplevels()
