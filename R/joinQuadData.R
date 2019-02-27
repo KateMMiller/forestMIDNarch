@@ -17,7 +17,11 @@
 #------------------------
 # Joins quadrat tables and filters by park, year, and plot/visit type
 #------------------------
-joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', output){
+joinQuadData<-function(speciesType=c('all', 'native','exotic'), park='all',from=2007, to=2018,
+  QAQC=FALSE, locType='VS', output){
+
+  speciesType<-match.arg(speciesType)
+
   # Prepare the quadrat data
   quadsamp$numQuadrats<-apply(quadsamp[,c(3:14)], 1,sum)
   park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, output='short'))
@@ -47,27 +51,31 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
   new.names<-c('A2','A5','A8','AA','B2','B5','B8','BB','C2','C5','C8','CC')
   quads2<-quads2 %>% rename_at(vars(old.names),~new.names)
 
-  quads2[,c(14:25)][is.na(quads2[,c(14:25)])]<-0
+    quads2[,c(14:25)][is.na(quads2[,c(14:25)])]<-0
   quads3<-quads2 %>% mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats) #%>% select(Event_ID:TSN,avg.cover)
   quads3[,c(14:25)][quads3[,c(14:25)]>0]<-1
   quads3<-quads3 %>% mutate(avg.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
   # Now to add the tree seedling cover data
   seed<-merge(quads1,sdlg[,c(1:4,11)], by=c("Event_ID"),all.x=T)
-  seed[,"Cover"][is.na(seed[,"Cover"])]<-0
-  seed[,'Cover'][seed[,'Cover']==1]<-0.1
-  seed[,'Cover'][seed[,'Cover']==2]<-1.5
-  seed[,'Cover'][seed[,'Cover']==3]<-3.5
-  seed[,'Cover'][seed[,'Cover']==4]<-7.5
-  seed[,'Cover'][seed[,'Cover']==5]<-17.5
-  seed[,'Cover'][seed[,'Cover']==6]<-37.5
-  seed[,'Cover'][seed[,'Cover']==7]<-62.5
-  seed[,'Cover'][seed[,'Cover']==8]<-85
-  seed[,'Cover'][seed[,'Cover']==9]<-97.5
+  seed<-seed %>% mutate(CoverClass=Cover) %>% select(-Cover)
 
-  seed2<-seed %>% group_by(Event_ID,Quadrat,TSN) %>% summarize(numQuadrats=first(numQuadrats),Cover=sum(Cover)) %>%
+  seed<-seed %>% mutate(Cover=case_when(
+    is.na(CoverClass) ~ 0,
+    CoverClass == 1 ~ 0.1,
+    CoverClass == 2 ~ 1.5,
+    CoverClass == 3 ~ 3.5,
+    CoverClass == 4 ~ 7.5,
+    CoverClass == 5 ~ 17.5,
+    CoverClass == 6 ~ 37.5,
+    CoverClass == 7 ~ 62.5,
+    CoverClass == 8 ~ 85,
+    CoverClass == 9 ~ 97.5
+  ))
+
+  seed2<-seed %>% group_by(Event_ID,Quadrat,TSN) %>%
+    summarize(numQuadrats=first(numQuadrats),Cover=sum(Cover))%>%
     left_join(park.plots,.,by="Event_ID")
-
   seed.wide<-seed2 %>% spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
     mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
   seed.wide<-seed.wide[,c(1:11,13,12,14:26)]
@@ -82,8 +90,7 @@ joinQuadData<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FA
   quad.comb3<-if (speciesType=='native'){filter(quad.comb2,Exotic==FALSE)
     } else if (speciesType=='exotic'){filter(quad.comb2,Exotic==TRUE)
     } else if (speciesType=='all'){(quad.comb2)
-    } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
-      stop("speciesType must be either 'native','exotic', or 'all'")}
+    }
 
   quad.comb4<-quad.comb3 %>% mutate(avg.cover=ifelse(TSN==-9999999951,0,avg.cover),
     avg.freq=ifelse(TSN==-9999999951,0,avg.freq))

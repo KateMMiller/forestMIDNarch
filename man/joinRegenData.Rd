@@ -4,9 +4,10 @@
 \alias{joinRegenData}
 \title{joinRegenData}
 \usage{
-joinRegenData(speciesType = "all", canopyForm = "canopy",
-  units = "sq.m", park = "all", from = 2007, to = 2018,
-  QAQC = FALSE, locType = "VS", height = "ht15", output)
+joinRegenData(speciesType = c("all", "native", "exotic"),
+  canopyForm = c("canopy", "all"), units = c("sq.m", "ha", "acres"),
+  park = "all", from = 2007, to = 2018, QAQC = FALSE,
+  locType = "VS", height = c("ht15", "all"), output)
 }
 \arguments{
 \item{speciesType}{Allows you to filter on native, exotic or include all species.

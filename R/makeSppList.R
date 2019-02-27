@@ -21,7 +21,10 @@
 #------------------------
 # Joins quadrat tables and filters by park, year, and plot/visit type
 #------------------------
-makeSppList<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', output,...){
+makeSppList<-function(speciesType=c('all', 'native', 'exotic'), park='all',
+  from=2007, to=2018, QAQC=FALSE, locType='VS', output,...){
+
+  speciesType<-match.arg(speciesType)
 
   park.plots<-force(joinLocEvent(park=park,from=from,to=to,QAQC=QAQC,locType=locType,rejected=F,output='short'))
   plants<-plants %>% mutate(Shrub=ifelse(Shrub+Vine>0,1,0))
@@ -58,15 +61,14 @@ makeSppList<-function(speciesType='all', park='all',from=2007, to=2018, QAQC=FAL
   comb7<-if (speciesType=='native'){filter(comb6,Exotic==FALSE)
   } else if (speciesType=='exotic'){filter(comb6,Exotic==TRUE)
   } else if (speciesType=='all'){(comb6)
-  } else if (speciesType!='native'|speciesType!='exotic'|speciesType!='all'){
-    stop("speciesType must be either 'native','exotic', or 'all'")}
+  }
 
   comb8<-merge(park.plots,comb7,by="Event_ID",all.x=T,all.y=F)
 
-  colnames(comb8)<-c("Event_ID","Location_ID","Unit_Code","Plot_Name","Plot_Number","X_Coord","Y_Coord","Panel",
-    "Year","Event_QAQC","cycle","TSN","tree.stems","tree.BAcm2","seed.den","sap.den","stocking.index","avg.quad.cover",
-    "avg.quad.freq","shrub.present.old","shrub.cover","addspp.present","Latin_Name","Common","Exotic","Tree","Shrub",
-    "Herbaceous","Graminoid")
+  colnames(comb8)<-c("Event_ID","Location_ID","Unit_Code","Plot_Name","Plot_Number","X_Coord","Y_Coord",
+    "Panel","Year","Event_QAQC","cycle","TSN","tree.stems","tree.BAcm2","seed.den","sap.den","stocking.index",
+    "avg.quad.cover","avg.quad.freq","shrub.present.old","shrub.cover","addspp.present","Latin_Name",
+    "Common","Exotic","Tree","Shrub","Herbaceous","Graminoid")
 
   comb8[,c(13:19,22)][is.na(comb8[,c(13:19,22)])]<-0
   comb8<-comb8 %>% mutate(shrub.cover=ifelse(Year>2010 & is.na(shrub.cover),0,shrub.cover),
