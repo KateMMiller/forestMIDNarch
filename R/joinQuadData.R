@@ -20,6 +20,10 @@
 joinQuadData<-function(speciesType=c('all', 'native','exotic'), park='all',from=2007, to=2018,
   QAQC=FALSE, locType='VS', output){
 
+  if(!requireNamespace("tidyr", quietly = TRUE)){
+    stop("Package 'tidyr' needed for this function to work. Please install it.", call. = FALSE)
+  }
+
   speciesType<-match.arg(speciesType)
 
   # Prepare the quadrat data
@@ -76,7 +80,7 @@ joinQuadData<-function(speciesType=c('all', 'native','exotic'), park='all',from=
   seed2<-seed %>% group_by(Event_ID,Quadrat,TSN) %>%
     summarize(numQuadrats=first(numQuadrats),Cover=sum(Cover))%>%
     left_join(park.plots,.,by="Event_ID")
-  seed.wide<-seed2 %>% spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
+  seed.wide<-seed2 %>% tidyr::spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
     mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
   seed.wide<-seed.wide[,c(1:11,13,12,14:26)]
   seed.wide[,14:25][seed.wide[,14:25]>0]<-1
