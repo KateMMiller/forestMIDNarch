@@ -37,7 +37,7 @@ treeMap<-function(df){
   p<-ggplot(data=df,aes(x=x, y=y, group=Status_ID, fill=Status_ID, size=DBH, label=Tree_Number_MIDN))+
     geom_hline(yintercept=0, lwd=1, color='DimGrey')+
     geom_vline(xintercept=0, lwd=1, color='DimGrey')+
-    geom_point(aes(fill=Status_ID),shape=21)+ xlim(-11.5,11.5)+ylim(-11.5,11.5)+
+    geom_jitter(aes(fill=Status_ID),shape=21, width=0.25)+ xlim(-11.5,11.5)+ylim(-11.5,11.5)+
     scale_fill_manual(values=status_cols)+
     theme_bw()+
     theme(panel.background=element_blank(), panel.grid.major=element_blank(),
@@ -52,7 +52,7 @@ treeMap<-function(df){
     geom_text(x=0, y=13.1, size=5, label='UP')+ geom_text(x=13.1,y=13,size=5,label='UR')+
     geom_text(x=13.1,y=-13,size=5,label='BR')+ geom_text(x=-13,y=-13,size=5,label='BL')+
     geom_text(x=-13,y=13, size=5, label='UL')+
-    geom_text(x=0, y=13.7, label=orient, size=5, col='red')
+    geom_text(x=0, y=14.5, label=orient, size=5, col='red')
 
   leg<-get_legend(ggplot(data=df, aes(x=x, y=y, group=Status_ID, fill=Status_ID))+
                     geom_point(aes(fill=Status_ID),shape=21, size=6)+labs(fill='Status')+
