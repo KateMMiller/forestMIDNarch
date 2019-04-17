@@ -35,32 +35,34 @@ treeMap<-function(df){
   orient<-paste0(unique(df$Plot_Name),' Orientation: ',unique(df$Orientation))
 
   p<-ggplot(data=df,aes(x=x, y=y, group=Status_ID, fill=Status_ID, size=DBH, label=Tree_Number_MIDN))+
-    geom_hline(yintercept=0, lwd=1, color='DimGrey')+
-    geom_vline(xintercept=0, lwd=1, color='DimGrey')+
-    geom_jitter(aes(fill=Status_ID),shape=21, width=0.25)+ xlim(-13,13)+ylim(-13,13)+
+    geom_rect(aes(xmin=-10.5, xmax=10.5, ymin=-10.5, ymax=10.5),
+              color='black', fill="lightgrey", alpha=0.1, size=0.1)+
+    geom_segment(aes(x=-10.2, xend=10.2, y=0, yend=0), lwd=1, color='DimGrey')+
+    geom_segment(aes(x=0, xend=0, y=-10.5, yend=10.5), lwd=1, color='DimGrey')+
+    geom_jitter(aes(fill=Status_ID),shape=21, width=0.25)+ xlim(-14.14,14.14)+ylim(-14.14,14.14)+
     scale_fill_manual(values=status_cols)+
     theme_bw()+
-    theme(panel.background=element_blank(), panel.grid.major=element_blank(),
+    theme(panel.background=element_blank(), panel.grid.major=element_blank(),plot.background=element_blank(),
+          panel.border=element_blank(),axis.ticks=element_blank(),
           panel.grid.minor=element_blank(), axis.text=element_blank(),
-          plot.margin=unit(c(3,2,2,2), 'lines'), legend.position='none',
+          plot.margin=unit(c(1,0.5,1,1), 'lines'), legend.position='none',
           legend.spacing.y=unit(0.05,'cm'), legend.text=element_text(size=10))+
     guides(shape=T, size=F)+
     scale_size_continuous(range=c(2,10))+
-    geom_text_repel(aes(x=x,y=y,label=Tree_Number_MIDN), direction='both', size=5, nudge_x=0.4,nudge_y=0.2)+
-    coord_cartesian(xlim=c(-13,13), clip='off')+
+    geom_text_repel(aes(x=x,y=y,label=Tree_Number_MIDN), direction='both', size=5, nudge_x=0.2,nudge_y=0.2)+
+    coord_cartesian(xlim=c(-14.14,14.14), clip='off')+
     labs(x=NULL,y=NULL, fill='Status')+
-    geom_text(x=0, y=14.9, size=5, label='UP')+ geom_text(x=15.3,y=15,size=5,label='UR')+
-    geom_text(x=15.3,y=-15,size=5,label='BR')+ geom_text(x=-15,y=-15,size=5,label='BL')+
-    geom_text(x=-15,y=15, size=5, label='UL')+
-    geom_text(x=0, y=16, label=orient, size=5, col='red')
+    geom_text(x=0, y=11.5, size=5, label='UP')+ geom_text(x=11.5,y=11.5,size=5,label='UR')+
+    geom_text(x=11.5,y=-11.5,size=5,label='BR')+ geom_text(x=-11.5,y=-11.5,size=5,label='BL')+
+    geom_text(x=-11.5,y=11.5, size=5, label='UL')+
+    geom_text(x=0, y=12.3, label=orient, size=5, col='red')
 
   leg<-get_legend(ggplot(data=df, aes(x=x, y=y, group=Status_ID, fill=Status_ID))+
                     geom_point(aes(fill=Status_ID),shape=21, size=6)+labs(fill='Status')+
                     scale_fill_manual(values=status_cols)+
                     guides(shape=T))
 
-  print(plot_grid(p,leg,rel_widths=c(1,0.2)))
-
+  print(plot_grid(p,leg,rel_widths=c(1.1,0.2)))
 
 } # end of function
 
