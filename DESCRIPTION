@@ -9,7 +9,10 @@ License: Public Domain
 Suggests: 
     odbc,
     DBI,
-    tidyr
+    tidyr,
+    ggplot2,
+    ggrepel,
+    cowplot
 Depends: 
     dplyr,
     lubridate,
