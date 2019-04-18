@@ -1,6 +1,9 @@
 #' @include joinLocEvent.R
 #' @title joinTreeData
 #'
+#' @importFrom dplyr select filter arrange mutate summarise group_by
+#' @importFrom magrittr %>%
+#'
 #' @description This function combines location and event-level Tree data. Must run importData first.
 #'
 #' @param status Filter by live, dead, or all. Acceptable options are:

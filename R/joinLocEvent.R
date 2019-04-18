@@ -1,5 +1,10 @@
 #' @title joinLocEvent
 #'
+#' @importFrom dplyr select filter arrange mutate summarise group_by between
+#' @importFrom magrittr %>%
+#' @importFrom lubridate year
+#' @importFrom stringr str_pad str_sub
+#'
 #' @description This function combines location and event data. Must run importData first.
 #'
 #' @param park Combine data from all parks or one park at a time. Acceptable options are:

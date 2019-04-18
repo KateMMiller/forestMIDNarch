@@ -1,6 +1,10 @@
 #' @include treeMapPrep.R
 #' @title treeMap: creates plot of trees by status and size
 #'
+#' @importFrom dplyr select filter arrange mutate summarise group_by
+#' @importFrom magrittr %>%
+#' @import ggplot2
+#'
 #' @description This function converts tree distance and azimuth values to coordinates and plots the coordinates of live or
 #' dead trees. Trees are color coded by status, and size is relative to DBH. Works best with data.frame derived
 #' from joinLocEvent and joinTreeData, then cleaned up with treeMapPrep(). Requires a data.frame with the following fields:
@@ -14,10 +18,6 @@
 # Plots tree map by status and size
 #------------------------
 treeMap<-function(df){
-
-  if(!requireNamespace("ggplot2", quietly = TRUE)){
-    stop("Package 'ggplot2' needed for this function to work. Please install it.", call. = FALSE)
-  }
 
   if(!requireNamespace("ggrepel", quietly = TRUE)){
     stop("Package 'ggrepel' needed for this function to work. Please install it.", call. = FALSE)
@@ -49,7 +49,7 @@ treeMap<-function(df){
           legend.spacing.y=unit(0.05,'cm'), legend.text=element_text(size=10))+
     guides(shape=T, size=F)+
     scale_size_continuous(range=c(2,10))+
-    geom_text_repel(aes(x=x,y=y,label=Tree_Number_MIDN), direction='both', size=5, nudge_x=0.2,nudge_y=0.2)+
+    ggrepel::geom_text_repel(aes(x=x,y=y,label=Tree_Number_MIDN), direction='both', size=5, nudge_x=0.2,nudge_y=0.2)+
     coord_cartesian(xlim=c(-14.14,14.14), clip='off')+
     labs(x=NULL,y=NULL, fill='Status')+
     geom_text(x=0, y=11.5, size=5, label='UP')+ geom_text(x=11.5,y=11.5,size=5,label='UR')+
@@ -57,12 +57,12 @@ treeMap<-function(df){
     geom_text(x=-11.5,y=11.5, size=5, label='UL')+
     geom_text(x=0, y=12.3, label=orient, size=5, col='red')
 
-  leg<-get_legend(ggplot(data=df, aes(x=x, y=y, group=Status_ID, fill=Status_ID))+
+  leg<-cowplot::get_legend(ggplot(data=df, aes(x=x, y=y, group=Status_ID, fill=Status_ID))+
                     geom_point(aes(fill=Status_ID),shape=21, size=6)+labs(fill='Status')+
                     scale_fill_manual(values=status_cols)+
                     guides(shape=T))
 
-  print(plot_grid(p,leg,rel_widths=c(1.1,0.2)))
+  print(cowplot::plot_grid(p,leg,rel_widths=c(1.1,0.2)))
 
 } # end of function
 

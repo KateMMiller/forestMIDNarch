@@ -1,6 +1,9 @@
 #' @include joinLocEvent.R
 #' @title joinCWDData
 #'
+#' @importFrom dplyr select filter arrange mutate summarise group_by case_when
+#' @importFrom magrittr %>%
+#'
 #' @description This function combines calculates CWD volume for each plot. Must run importData first.
 #'
 #'#' @param units Calculates CWD Volume based on different units.

@@ -1,6 +1,9 @@
 #' @include joinLocEvent.R
 #' @title joinMicroShrubData
 #'
+#' @importFrom dplyr select filter arrange mutate summarise group_by
+#' @importFrom magrittr %>%
+#'
 #' @description This function combines shrub stem (cycle 1) and percent cover (cycle 2+) data from microplots. Must run importData first.
 #'
 #' @param speciesType Allows you to filter on native, exotic or include all species.

@@ -1,6 +1,9 @@
 #' @include joinQuadData.R
 #' @title sumQuadGuilds
 #'
+#' @importFrom dplyr select filter arrange mutate summarise group_by first
+#' @importFrom magrittr %>%
+#'
 #' @description This function summarizes output from joinQuadData and calculates average cover and quadrat frequency for each guild. Average cover is corrected for number of quadrats sampled.
 #'
 #' @param speciesType Allows you to filter on native, exotic or include all species.
