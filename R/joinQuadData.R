@@ -1,7 +1,7 @@
 #' @include joinLocEvent.R
 #' @title joinQuadData
 #'
-#' @importFrom dplyr select filter arrange mutate summarise group_by rename_at
+#' @importFrom dplyr select filter arrange mutate summarise group_by rename_at left_join
 #' @importFrom magrittr %>%
 #'
 #' @description This function combines quadrat species and tree seedling cover data with species names and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also includes woody vine species.
@@ -81,7 +81,7 @@ joinQuadData<-function(speciesType=c('all', 'native','exotic'), park='all',from=
   ))
 
   seed2<-seed %>% group_by(Event_ID,Quadrat,TSN) %>%
-    summarize(numQuadrats=first(numQuadrats),Cover=sum(Cover))%>%
+    summarise(numQuadrats=first(numQuadrats),Cover=sum(Cover))%>%
     left_join(park.plots,.,by="Event_ID")
   seed.wide<-seed2 %>% tidyr::spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
     mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)

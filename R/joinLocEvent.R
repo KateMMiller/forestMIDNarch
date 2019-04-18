@@ -66,7 +66,7 @@ joinLocEvent<-function(park="all", from=2007,to=2018, QAQC=FALSE, rejected=FALSE
   } else if (QAQC==TRUE) {(park.ev)
   } else {stop("QAQC must be TRUE or FALSE")}
 
-  park.ev3<- park.ev2 %>% mutate(Year=year(Start_Date))
+  park.ev3<- park.ev2 %>% mutate(Year=lubridate::year(Start_Date))
 
   # add cycles for MIDN/NCBN parks
   cycle1<-(2007:2010)
