@@ -2,7 +2,7 @@
 % Please edit documentation in R/joinMicroShrubData.R
 \name{joinMicroShrubData}
 \alias{joinMicroShrubData}
-\title{joinMicroShrubData}
+\title{joinMicroShrubData: compiles shrub data collected in microplots}
 \usage{
 joinMicroShrubData(speciesType = c("all", "native", "exotic"),
   park = "all", from = 2007, to = 2018, QAQC = FALSE,
@@ -21,4 +21,13 @@ returns a dataframe with shrub data collected in microplots
 }
 \description{
 This function combines shrub stem (cycle 1) and percent cover (cycle 2+) data from microplots. Must run importData first.
+}
+\examples{
+importData()
+# native shrubs in RICH all years
+native_shrubs <- joinMicroShrubData(park ='RICH', speciesType = 'native')
+
+# all parks with exotic shrubs in most recent survey
+exotic_shrubs <- joinMicroShrubData(from = 2015, to = 2018, speciesType = 'exotic')
+
 }

@@ -1,8 +1,9 @@
 #' @include joinLocEvent.R
-#' @title joinCWDData
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by case_when
 #' @importFrom magrittr %>%
+#'
+#' @title joinCWDData: compile coarse woody debris data.
 #'
 #' @description This function combines calculates CWD volume for each plot. Must run importData first.
 #'
@@ -13,6 +14,14 @@
 #'}
 #'
 #' @return returns a dataframe with CWD volume for each plot, one with cubic m/ha and cubic ft/acre
+#'
+#' @examples
+#' importData() #imports using default odbc
+#' # Compile CWD data for FRSP for most recent survey and return in ft^3/acre
+#' cwd_data <- joinCWDData(park = 'FRSP', from = 2015, to = 2018, units = 'acres')
+#'
+#' # Compile CWD data for all parks (default) for most recent survey and return in m^3/ha (default)
+#' cwd_data <- joinCWDData(from = 2015, to = 2018)
 #'
 #' @export
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/joinCWDData.R
 \name{joinCWDData}
 \alias{joinCWDData}
-\title{joinCWDData}
+\title{joinCWDData: compile coarse woody debris data.}
 \usage{
 joinCWDData(units = c("ha", "acres"), park = "all", from = 2007,
   to = 2018, QAQC = FALSE, locType = "VS", output)
@@ -18,4 +18,13 @@ This function combines calculates CWD volume for each plot. Must run importData 
 \item{"ha"}{Default. Returns CWD volume as cubic m/hectare}
 \item{"acres"}{Returns CWD volume as cubic ft/ acre}
 }
+}
+\examples{
+importData() #imports using default odbc
+# Compile CWD data for FRSP for most recent survey and return in ft^3/acre
+cwd_data <- joinCWDData(park = 'FRSP', from = 2015, to = 2018, units = 'acres')
+
+# Compile CWD data for all parks (default) for most recent survey and return in m^3/ha (default)
+cwd_data <- joinCWDData(from = 2015, to = 2018)
+
 }

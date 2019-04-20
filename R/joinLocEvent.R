@@ -1,4 +1,4 @@
-#' @title joinLocEvent
+#' @title joinLocEvent: merges Location and Event level data with options for filtering.
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by between
 #' @importFrom magrittr %>%
@@ -37,6 +37,19 @@
 #' \item{"VS"}{Only include plots that are part of the Vital Signs GRTS sample design}
 #' \item{"all"}{Include all plots, such as deer exclosures and bonus plots}}
 #' @return returns a dataframe with location and visit events
+#'
+#' @examples
+#' importCSV('./forest_csvs')
+#' # Select most recent survey of data from APCO
+#' APCO_data <- joinLocEvent(park = 'APCO', from = 2015, to = 2018)
+#'
+#' # Select data from cycle 3
+#' cycle3 <- joinLocEvent(from = 2015, to = 2018) # all parks is default
+#'
+#' # Select data from plots that had a QA/QC event in ACAD in 2018
+#' GETT_data<-joinLocEvent(park = 'GETT', QAQC = T, from = 2018)
+#' QAQC_plots<-GETT_data$Plot_Name[which(GETT_data$Event_QAQC==TRUE)]
+#' GETT_QAQC<-GETT_data %>% filter(Plot_Name %in% QAQC_plots) %>% droplevels()
 #'
 #' @export
 #'

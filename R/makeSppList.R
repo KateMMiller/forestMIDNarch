@@ -3,7 +3,7 @@
 #' @include joinQuadData.R
 #' @include joinRegenData.R
 #' @include joinMicroShrubData.R
-#' @title makeSppList
+#' @title makeSppList: creates a species list for each plot
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by
 #' @importFrom magrittr %>%
@@ -18,6 +18,26 @@
 #' }
 #'
 #' @return Returns a dataframe with species list for each plot.
+#'
+#' @examples
+#' importData()
+#'
+#' # Compile number of exotic species found per plot in most recent survey for all parks
+#' exo_spp <- makeSppList(speciesType = 'exotic', from = 2015, to = 2018)
+#' exo_spp$present<-ifelse(is.na(exo_spp$Latin_Name), 0, 1)
+#' num_exo_per_plot <- exo_spp %>% group_by(Plot_Name) %>% summarise(numspp=sum(present, na.rm=T))
+#'
+#' # Compile species list for a given panel of a park
+#' PETE_spp <- makeSppList(park = 'PETE', from = 2015, to = 2015)
+#'
+#' #--- arrange and drop unnecessary fields.
+#' PETE_spp_final <- PETE_spp %>% arrange(Plot_Name, Latin_Name) %>%
+#'   select(Plot_Name, Latin_Name, Common, tree.stems, stocking.index, avg.quad.cover, shrub.cover,
+#'   addspp.present)
+#'
+#' #--- make species list for a given plot from 2015
+#' PETE_021_2015_spp <- PETE_spp %>% filter(Plot_Name == 'PETE-021') %>%
+#'   select(Plot_Name, Year, Latin_Name, Common) %>% droplevels()
 #'
 #' @export
 #'

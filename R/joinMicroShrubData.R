@@ -1,5 +1,5 @@
 #' @include joinLocEvent.R
-#' @title joinMicroShrubData
+#' @title joinMicroShrubData: compiles shrub data collected in microplots
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by
 #' @importFrom magrittr %>%
@@ -13,6 +13,14 @@
 #' \item{"exotic"}{Returns exotic species only}
 #' }
 #' @return returns a dataframe with shrub data collected in microplots
+#'
+#' @examples
+#' importData()
+#' # native shrubs in RICH all years
+#' native_shrubs <- joinMicroShrubData(park ='RICH', speciesType = 'native')
+#'
+#' # all parks with exotic shrubs in most recent survey
+#' exotic_shrubs <- joinMicroShrubData(from = 2015, to = 2018, speciesType = 'exotic')
 #'
 #' @export
 #'
