@@ -2,7 +2,7 @@
 % Please edit documentation in R/joinTreeData.R
 \name{joinTreeData}
 \alias{joinTreeData}
-\title{joinTreeData}
+\title{joinTreeData: compiles tree data}
 \usage{
 joinTreeData(status = c("all", "live", "dead"), speciesType = c("all",
   "native", "exotic"), park = "all", from = 2007, to = 2018,
@@ -28,4 +28,19 @@ returns a dataframe with plot-level and visit-level tree data
 }
 \description{
 This function combines location and event-level Tree data. Must run importData first.
+}
+\examples{
+importData()
+# compile tree data for live trees only in most recent survey in all parks
+live_trees <- joinTreeData(status = 'live', from = 2015, to = 2018)
+
+# compile FRSP trees within 7.3152m radius (FIA subplot size) in most recent survey
+FRSP_100m <- joinTreeData(park = 'FRSP', from = 2015, to = 2018, dist_m = 7.3152)
+
+# compile dead trees in GETT in most recent survey
+GETT_dead <- joinTreeData(park = 'GETT', from = 2015, to = 2018, status = 'dead')
+
+# compile exotic trees in VAFO in all years
+VAFO_exotic <- joinTreeData(park = 'VAFO', from = 2015, to = 2018, speciesType = 'exotic')
+
 }

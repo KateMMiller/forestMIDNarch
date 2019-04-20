@@ -2,7 +2,7 @@
 % Please edit documentation in R/joinQuadData.R
 \name{joinQuadData}
 \alias{joinQuadData}
-\title{joinQuadData}
+\title{joinQuadData: compiles quadrat species data}
 \usage{
 joinQuadData(speciesType = c("all", "native", "exotic"), park = "all",
   from = 2007, to = 2018, QAQC = FALSE, locType = "VS", output)
@@ -20,4 +20,13 @@ Returns a dataframe with cover class midpoints for each quadrat and includes gui
 }
 \description{
 This function combines quadrat species and tree seedling cover data with species names and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also includes woody vine species.
+}
+\examples{
+importData()
+# compile quadrat data for exotic species in PETE for all years
+PETE_quads <- joinQuadData(park = 'PETE', speciesType = 'exotic')
+
+# compile native species only for all parks in most recent survey
+native_quads <- joinQuadData(speciesType = 'native', from = 2015, to = 2018)
+
 }

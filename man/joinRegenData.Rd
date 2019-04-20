@@ -2,7 +2,7 @@
 % Please edit documentation in R/joinRegenData.R
 \name{joinRegenData}
 \alias{joinRegenData}
-\title{joinRegenData}
+\title{joinRegenData: compiles seedling and sapling data}
 \usage{
 joinRegenData(speciesType = c("all", "native", "exotic"),
   canopyForm = c("canopy", "all"), units = c("sq.m", "ha", "acres"),
@@ -32,7 +32,7 @@ joinRegenData(speciesType = c("all", "native", "exotic"),
 
 \item{height}{Determines whether all height classes are included, or just >15cm seedlings.
 \describe{
-\item{"ht15"}{Default. Returns seedlings >15cm and all saplings.}
+\item{"ht15"}{Default. Returns seedlings >=15cm and all saplings.}
 \item{"all"}{Returns all seedlings and saplings, including 5-15cm seedlings in VAFO.}
 }}
 }
@@ -41,4 +41,17 @@ returns a dataframe with seedling and sapling densities, and stocking index
 }
 \description{
 This function combines seedling and sapling data, and calculates stocking index. Must run importData first.
+}
+\examples{
+importCSV('./forest_csvs/')
+# Compile seedling and sapling data for all parks and all species in most recent cycle,
+# and only include seedlings >=15cm tall (default).
+regen_data <- joinRegenData(canopyForm = 'all', from = 2015, to = 2018)
+
+# compile regen data for canopy-forming (default), native species of all size classes in VAFO for all years
+VAFO_regen <- joinRegenData(park = 'VAFO', speciesType = 'native', height = 'all')
+
+# Compile seedling and sapling densities as stems/ha for all parks in most recent survey
+regen_data <- joinRegenData(units = 'ha', from = 2015, to = 2018)
+
 }

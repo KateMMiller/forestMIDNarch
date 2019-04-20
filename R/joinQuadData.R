@@ -1,5 +1,5 @@
 #' @include joinLocEvent.R
-#' @title joinQuadData
+#' @title joinQuadData: compiles quadrat species data
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by rename_at left_join
 #' @importFrom magrittr %>%
@@ -14,6 +14,14 @@
 #' }
 #'
 #' @return Returns a dataframe with cover class midpoints for each quadrat and includes guild for each species.
+#'
+#' @examples
+#' importData()
+#' # compile quadrat data for exotic species in PETE for all years
+#' PETE_quads <- joinQuadData(park = 'PETE', speciesType = 'exotic')
+#'
+#' # compile native species only for all parks in most recent survey
+#' native_quads <- joinQuadData(speciesType = 'native', from = 2015, to = 2018)
 #'
 #' @export
 #'

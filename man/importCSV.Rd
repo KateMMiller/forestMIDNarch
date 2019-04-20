@@ -2,7 +2,7 @@
 % Please edit documentation in R/importCSV.R
 \name{importCSV}
 \alias{importCSV}
-\title{importCSV}
+\title{importCSV: Import NETN forest data that are formated as .csv files.}
 \usage{
 importCSV(path = NA)
 }
@@ -13,5 +13,11 @@ importCSV(path = NA)
 Assigns database tables to global environment
 }
 \description{
-This function imports exported CSV tables from the MIDN Forest Database.
+This function imports exported CSV tables from the MIDN Forest Database, and
+assigns the tables to the global environment with names that functions in this package
+depend on.
+}
+\examples{
+importCSV("C:/Data/forest_csvs")
+
 }

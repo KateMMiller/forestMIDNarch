@@ -1,5 +1,5 @@
 #' @include joinQuadData.R
-#' @title sumQuadGuilds
+#' @title sumQuadGuilds: summarizes quadrat species data by guilds
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by first
 #' @importFrom magrittr %>%
@@ -14,6 +14,15 @@
 #' }
 #'
 #' @return Returns a dataframe with average quadrat cover, percent quadrat frequency and quadrat frequency count for tree,shrub/vine,herbaceous,and graminoid. Data are sither summarized for all species, native only, exotic only, or invasive only.
+#'
+#' @examples
+#' importData()
+#'
+#' # compile exotic quad data for all parks and most recent survey.
+#' exo_guilds <- sumQuadGuilds(speciesType = 'exotic', from = 2015, to = 2018)
+#'
+#' # compile native quad data for more recent survey in COLO, with ferns and forbs split in separate guilds
+#' COLO_guilds <- sumQuadGuilds(speciesType = 'native', from = 2015, to = 2018)
 #'
 #' @export
 #'
