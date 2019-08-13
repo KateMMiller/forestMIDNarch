@@ -4,8 +4,9 @@
 \alias{joinLocEvent}
 \title{joinLocEvent: merges Location and Event level data with options for filtering.}
 \usage{
-joinLocEvent(park = "all", from = 2007, to = 2018, QAQC = FALSE,
-  rejected = FALSE, locType = "VS", output = "short")
+joinLocEvent(park = "all", from = 2006, to = 2018, QAQC = FALSE,
+  rejected = FALSE, panels = 1:4, locType = "VS", output = "short",
+  ...)
 }
 \arguments{
 \item{park}{Combine data from all parks or one park at a time. Acceptable options are:
@@ -37,6 +38,9 @@ joinLocEvent(park = "all", from = 2007, to = 2018, QAQC = FALSE,
 \describe{
 \item{FALSE}{Default. Only returns plots that were not rejected.}
 \item{TRUE}{returns all records}}}
+
+\item{panels}{Allows you to select individual panels from 1 to 4. Default is all 4 panels (1:4).
+If more than one panel is selected, specify by c(1,3), for example.}
 
 \item{locType}{Allows you to only include plots that are part of the GRTS sample design or include all plots, such as deer exclosures
 \describe{

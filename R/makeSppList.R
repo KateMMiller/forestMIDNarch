@@ -45,12 +45,12 @@
 # Joins quadrat tables and filters by park, year, and plot/visit type
 #------------------------
 makeSppList<-function(speciesType=c('all', 'native', 'exotic'), park='all',
-  from=2007, to=2018, QAQC=FALSE, locType='VS', output,...){
+  from=2007, to=2018, QAQC=FALSE, panels=1:4, locType='VS', output, ...){
 
   speciesType<-match.arg(speciesType)
 
-  park.plots<-force(joinLocEvent(park=park,from=from,to=to,QAQC=QAQC,locType=locType,rejected=F,output='short'))
-  plants<-plants %>% mutate(Shrub=ifelse(Shrub+Vine>0,1,0))
+  park.plots<-force(joinLocEvent(park = park, from = from, to = to, QAQC = QAQC, locType = locType,
+                                 rejected = F, panels = panels, output='short'))
 
   trees1<-force(joinTreeData(park=park, from=from,to=to,QAQC=QAQC,locType=locType,
     output='short', status='live'))
