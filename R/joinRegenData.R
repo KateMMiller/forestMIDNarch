@@ -30,6 +30,7 @@
 #' \item{"all"}{Returns all seedlings and saplings, including 5-15cm seedlings in VAFO.}
 #'}
 #'
+#'
 #' @return returns a dataframe with seedling and sapling densities, and stocking index
 #'
 #' @examples
@@ -49,16 +50,17 @@
 #------------------------
 # Joins quadrat and microplot tables and filters by park, year, and plot/visit type
 #------------------------
-joinRegenData<-function(speciesType=c('all','native','exotic'), canopyForm=c('canopy','all'),
-  units=c('sq.m','ha','acres'), park='all',from=2007, to=2018, QAQC=FALSE, locType='VS',
-  height=c('ht15','all'), output){
+joinRegenData<-function(speciesType = c('all', 'native', 'exotic'), canopyForm = c('canopy', 'all'),
+  units = c('sq.m', 'ha', 'acres'), park = 'all', from = 2007, to = 2018, QAQC = FALSE,
+  locType = 'VS', height=c('ht15','all'), panels=1:4, output, ...){
 
   speciesType<-match.arg(speciesType)
   canopyForm<-match.arg(canopyForm)
   units<-match.arg(units)
   height<-match.arg(height)
 
-  park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, rejected=F, output='short'))
+  park.plots<-force(joinLocEvent(park = park, from = from, to = to, QAQC = QAQC, locType = locType,
+                                 rejected = F, panels = panels, output='short'))
 
 # Prepare the seedling data
   quad1<-merge(park.plots,quadsamp[,1:14], all.x=T)

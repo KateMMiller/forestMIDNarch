@@ -5,8 +5,8 @@
 \title{makeSppList: creates a species list for each plot}
 \usage{
 makeSppList(speciesType = c("all", "native", "exotic"), park = "all",
-  from = 2007, to = 2018, QAQC = FALSE, locType = "VS", output,
-  ...)
+  from = 2007, to = 2018, QAQC = FALSE, panels = 1:4,
+  locType = "VS", output, ...)
 }
 \arguments{
 \item{speciesType}{Allows you to filter on native, exotic or include all species.
