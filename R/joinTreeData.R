@@ -18,6 +18,11 @@
 #' \item{"native"}{Returns native species only}
 #' \item{"exotic"}{Returns exotic species only}
 #' }
+#'
+#' @param dist_m Filter trees by a distance that is less than or equal to the specified distance in meters
+#' of the tree to the center of the plot. If no distance is specified, then all trees will be selected. For
+#' example, to select an area of trees that is 100 square meters in area, use a distance of 5.64m.
+#'
 #' @return returns a dataframe with plot-level and visit-level tree data
 #'
 #' @examples
@@ -40,8 +45,9 @@
 #------------------------
 # Joins tbl_Trees and tbl_Tree_Data tables and filters by park, year, and plot/visit type
 #------------------------
-joinTreeData<-function(status=c('all','live','dead'),speciesType=c('all', 'native','exotic'),
-  park='all',from=2007,to=2018,QAQC=FALSE,locType='VS',output){
+joinTreeData<-function(status = c('all','live','dead'), speciesType = c('all', 'native', 'exotic'), park = 'all',
+                       from = 2007, to = 2018, QAQC = FALSE, locType = 'VS', panels = 1:4, dist_m = NA, output, ...){
+
   status<-match.arg(status)
   speciesType<-match.arg(speciesType)
 
@@ -64,11 +70,16 @@ joinTreeData<-function(status=c('all','live','dead'),speciesType=c('all', 'nativ
   } else if (speciesType=='all'){(tree3)
   }
 
-  park.plots2<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, rejected=F,output='short'))
+  tree5<-if (!is.na(dist_m)){filter(tree4,Distance<=dist_m)
+  } else {tree4}
 
-  tree5<-merge(park.plots2, tree4, by='Event_ID', all.x=T)
-  tree5<-droplevels(tree5)
 
-  return(data.frame(tree5))
+  park.plots2<-force(joinLocEvent(park = park, from = from, to = to, QAQC = QAQC,
+                                  locType = locType, panels = panels, output = 'short'))
+
+  tree6<-merge(park.plots2, tree5, by='Event_ID', all.x=T)
+  tree6<-droplevels(tree6)
+
+  return(data.frame(tree6))
 } # end of function
 
