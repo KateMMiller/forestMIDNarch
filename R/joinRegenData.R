@@ -86,23 +86,27 @@ joinRegenData<-function(speciesType = c('all', 'native', 'exotic'), canopyForm =
     seed.dens.m2=seed15.30m2+seed30.100m2+seed100.150m2+seed150pm2)
 
   # Prepare the sapling data
-  saps1<-merge(micro,saps[,c("Microplot_Sapling_Data_ID", "Microplot_Characterization_Data_ID","Tree_ID",
-    "DBH","Status_ID")],by="Microplot_Characterization_Data_ID", all.y=T)
+  saps1<-merge(micro, saps[,c("Microplot_Sapling_Data_ID", "Microplot_Characterization_Data_ID","Tree_ID",
+    "DBH","Status_ID")],by="Microplot_Characterization_Data_ID", all.y=T, all.x=T)
+
   saps2<-merge(saps1,trees[,c("Location_ID","Tree_ID","TSN","Tree_Number_MIDN")],
     by=c("Tree_ID"), all.x=T, all.y=F)
   saps3<-merge(park.plots,saps2,by='Event_ID',all.x=T)
   saps4<-merge(saps3,plants[,c("TSN","Latin_Name","Common", 'Canopy_Exclusion','Exotic')],by="TSN",all.x=T)
   saps4$DBH[is.na(saps4$DBH)]<-0
-  saps4$sap<-ifelse(saps4$DBH>0 & saps4$DBH<10.0, 1,0)
-  saps5<-saps4 %>% group_by(Event_ID,TSN, Status_ID) %>%
+  saps4<-saps4 %>% mutate(sap= ifelse(DBH>0 & DBH<10, 1, 0), Status_ID=ifelse(is.na(Status_ID),'nospp',paste(Status_ID)))
+  #saps4$sap<-ifelse(saps4$DBH>0 & saps4$DBH<10.0, 1,0)
+
+  saps5<-saps4 %>% group_by(Event_ID, TSN, Status_ID) %>%
     summarise(Latin_Name=first(Latin_Name),Common=first(Common),Canopy_Exclusion=first(Canopy_Exclusion),
       Exotic=first(Exotic),sap.stems=sum(sap, na.rm=T),avg.sap.dbh=mean(DBH, na.rm=T))
+
 
   alive<-c("AB","AF","al","AL","AM","AS","RB","RF","RL","RS")
   wgt.sap.stock<-50/((pi*3^2)*3)
   wgt.sap.dens<-(pi*3^2)*3
 
-  saps6<-saps5 %>% filter(Status_ID %in% alive & Canopy_Exclusion ==0) %>%
+  saps6<-saps5 %>% filter(Status_ID %in% alive & Canopy_Exclusion == 0) %>%
     group_by(Event_ID,TSN,Latin_Name,Common,Exotic) %>%
     summarise(sap.dens.m2=sum(sap.stems)/wgt.sap.dens,sap.stock=wgt.sap.stock*sum(sap.stems)) %>% droplevels()
 
@@ -112,8 +116,8 @@ joinRegenData<-function(speciesType = c('all', 'native', 'exotic'), canopyForm =
 
 # Combine seedling and sapling data
   regen1<-merge(park.plots,seed3,by='Event_ID', all.x=T,all.y=F)
-  regen2<-merge(regen1,saps7[,c("Event_ID","TSN","sap.dens.m2","sap.stock")],by=c("Event_ID","TSN"),all.x=T,all.y=F)
-  regen3<-merge(regen2,plants[,c('TSN','Latin_Name','Common','Exotic','Canopy_Exclusion')], by='TSN',all.x=T)
+  regen2<-merge(regen1,saps7[,c("Event_ID","TSN","sap.dens.m2","sap.stock")],by=c("Event_ID","TSN"), all.x=T, all.y=T)
+  regen3<-merge(regen2,plants[,c('TSN','Latin_Name','Common','Exotic','Canopy_Exclusion')], by='TSN', all.x=T, all.y=T)
 
   regen4<-if(canopyForm=='canopy'){filter(regen3, Canopy_Exclusion!=1)
   } else if(canopyForm=='all'){(regen3)
@@ -160,6 +164,7 @@ joinRegenData<-function(speciesType = c('all', 'native', 'exotic'), canopyForm =
   names(regen8)
   regen8[,17:24][is.na(regen8[,17:24])]<-0
 
+  #View(regen8)
   return(data.frame(regen8))
 } # end of function
 
