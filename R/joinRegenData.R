@@ -117,11 +117,8 @@ joinRegenData<-function(speciesType = c('all', 'native', 'exotic'), canopyForm =
 # Combine seedling and sapling data
   regen1<-merge(park.plots,seed3,by='Event_ID', all.x=T,all.y=F)
   regen2<-merge(regen1,saps7[,c("Event_ID","TSN","sap.dens.m2","sap.stock")],by=c("Event_ID","TSN"), all.x=T, all.y=T)
-<<<<<<< HEAD
   regen3<-merge(regen2,plants[,c('TSN','Latin_Name','Common','Exotic','Canopy_Exclusion')], by='TSN', all.x=T, all.y=F)
-=======
   regen3<-merge(regen2,plants[,c('TSN','Latin_Name','Common','Exotic','Canopy_Exclusion')], by='TSN', all.x=T, all.y=F)
->>>>>>> 44b51400353a5b0adceb18aba532d5d6bf162be9
 
   regen4<-if(canopyForm=='canopy'){filter(regen3, Canopy_Exclusion!=1)
   } else if(canopyForm=='all'){(regen3)
