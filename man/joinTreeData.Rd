@@ -32,7 +32,9 @@ example, to select an area of trees that is 100 square meters in area, use a dis
 returns a dataframe with plot-level and visit-level tree data
 }
 \description{
-This function combines location and event-level Tree data. Must run importData first.
+This function combines location and event-level Tree data. Note that BA_cm2 was corrected
+for Loc_Type=='Deer' to be the same as Loc_Type=='VS' by multiplying BA_cm2 by 4 to get BA_cm2/400m2.
+Must run importData first.
 }
 \examples{
 importData()

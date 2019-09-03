@@ -53,8 +53,11 @@ sumTreeDBHDist<-function(status = c('all', 'live','dead'), speciesType = c('all'
   speciesType <- match.arg(speciesType)
   units <- match.arg(units)
 
-  park.plots <- force(joinLocEvent(park = park, from = from, to = to, QAQC = QAQC,
-                                   locType = locType, panels = panels, output = 'short'))
+  park.plots <- force(joinLocEvent(park = park, from = from,to = to, QAQC = QAQC,locType = locType,
+                                   rejected = F, panels = panels, output = 'verbose'))
+
+  park.plots <- park.plots %>% select(Location_ID, Event_ID, Unit_Code, Plot_Name, Plot_Number, X_Coord, Y_Coord,
+                                      Panel, Year, Event_QAQC, cycle, Loc_Type)
 
   tree_df <- force(joinTreeData(park = park, from = from, to = to, QAQC = QAQC, speciesType = speciesType,
                    locType = locType, panels = panels, dist_m = dist_m, status = status))
@@ -80,14 +83,14 @@ sumTreeDBHDist<-function(status = c('all', 'live','dead'), speciesType = c('all'
                                                                      DBH>=100 ~ 'd100p',
                                                                      TRUE ~ 'unknown')),
                                      stem = 1,
-                                     unit_conv = ifelse(Unit_Code == 'ACAD', 225, 400))
+                                     unit_conv = ifelse(Loc_Type == 'Deer', 100, 400))
 
 # In case there's a size class not represented
 
 
 tree_dist <- tree_df3 %>% group_by(Event_ID, Plot_Name, size_class, unit_conv) %>%
                             summarise(num_stems_ha = sum(stem)*10000/first(unit_conv),
-                                      BA_m2ha = sum(BA_cm2)/first(unit_conv))
+                                      BA_m2ha = sum(BA_cm2)/400) # BA already corrected for Deer Ex. in joinTreeData
 
 tree_dist_wide <- if (units=='density') {
                 tree_dist %>% select(Event_ID, Plot_Name, size_class, num_stems_ha) %>%
@@ -107,7 +110,7 @@ missing_sizes <- setdiff(sizes, names(tree_dist_wide))
 tree_dist_wide[missing_sizes] <- 0
 
 tree_dist_final <- merge(park.plots, tree_dist_wide, by=c('Event_ID', 'Plot_Name'), all.x=T) %>%
-                   select(Location_ID, Event_ID, Plot_Name, Unit_Code:cycle,
+                   select(Location_ID, Event_ID, Plot_Name, Unit_Code:cycle, Loc_Type,
                           d10_19.9, d20_29.9, d30_39.9, d40_49.9, d50_59.9, d60_69.9,
                           d70_79.9, d80_89.9, d90_99.9, d100p, unknown) %>% arrange(Plot_Name, cycle)
 
