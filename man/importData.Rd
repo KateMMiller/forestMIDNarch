@@ -4,7 +4,8 @@
 \alias{importData}
 \title{importData: Import tables directly from MIDN forest database}
 \usage{
-importData(type = c("DSN", "file"), odbc = "MIDNFVM", path = NA)
+importData(type = c("DSN", "file"), odbc = "MIDNFVM", path = NA,
+  import_tables = c("all", "single"), table_name = NA)
 }
 \arguments{
 \item{type}{Select whether to use the default DSN to import data or a different database
@@ -14,6 +15,16 @@ importData(type = c("DSN", "file"), odbc = "MIDNFVM", path = NA)
 }}
 
 \item{path}{Quoted path of database backend file, including the name of the backend.}
+
+\item{import_tables}{Specify whether to import all tables or individual tables
+\describe{
+\item{"all"}{Default. Imports all relevant tables from the backend database.}
+\item{"single"}{Imports an individual table or tables from the backend database. If single is specified,
+you must then specify the exact table name in quotes from the backend database. The table will be given
+the same object name as if all tables were imported so that package functions are still useable.}
+}}
+
+\item{table_name}{Specify a quoted list of one or more table names}
 }
 \value{
 Assigns database tables to global environment
@@ -29,5 +40,8 @@ importData(type='file', path='./Data/MIDN_Forest_Backend.mdb')
 
 # Import ODBC named database
 importData(type='DSN', odbc="MIDNFVM")
+
+# Import individual tables
+importData(type='DSN',odbc='MIDFVM',import_tables='single',table_name=c('tlu_Plants','tbl_Quadrat_Species_Data'))
 
 }

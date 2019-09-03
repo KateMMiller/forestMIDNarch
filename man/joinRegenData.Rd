@@ -41,7 +41,9 @@ joinRegenData(speciesType = c("all", "native", "exotic"),
 returns a dataframe with seedling and sapling densities, and stocking index
 }
 \description{
-This function combines seedling and sapling data, and calculates stocking index. Must run importData first.
+This function combines seedling and sapling data, and calculates stocking index at the 1 sq. m level.
+Stocking index thresholds are 2 for areas with low deer, and 8 for areas with high deer.
+Must run importData first.
 }
 \examples{
 importCSV('./forest_csvs/')

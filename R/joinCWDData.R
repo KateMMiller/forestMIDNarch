@@ -6,6 +6,7 @@
 #' @title joinCWDData: compile coarse woody debris data.
 #'
 #' @description This function combines calculates CWD volume for each plot. Must run importData first.
+#' Note that plots in Deer Exclosures are not sampled for CWD and will not be returned.
 #'
 #'#' @param units Calculates CWD Volume based on different units.
 #' \describe{
@@ -31,7 +32,11 @@
 joinCWDData<-function(units=c('ha','acres'), park='all',from=2007, to=2018, QAQC=FALSE, locType='VS', output, ...){
   units<-match.arg(units)
   # Prepare the CWD data
-  park.plots<-force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, output='short'))
+  park.plots <- force(joinLocEvent(park=park, from=from,to=to,QAQC=QAQC,locType=locType, output='verbose'))
+  park.plots <- park.plots %>% filter(Loc_Type!='Deer') %>%
+    select(Location_ID, Event_ID, Unit_Code, Plot_Name, Plot_Number, X_Coord, Y_Coord, Panel, Year, Event_QAQC,
+           cycle) %>% droplevels()
+
   cwd1<-merge(park.plots,cwd,by='Event_ID', all.x=T,all.y=F)
   cwd2<-merge(cwd1[,c("Event_ID","TSN","Diameter","Decay_Class_ID","Hollow","Transect","Distance","Wood_Type")],
               plants[,c('TSN','Latin_Name','Common')], by='TSN',all.x=T)
