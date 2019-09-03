@@ -30,7 +30,7 @@
 #' importData(type='DSN', odbc="MIDNFVM")
 #'
 #' # Import individual tables
-#' importData(type='DSN',odbc='MIDFVM',import_tables='single',table_name=c('tlu_Plants','tbl_Quadrat_Species_Data'))
+#' importData(import_tables='single',table_name=c('tlu_Plants','tbl_Quadrat_Species_Data'))
 #'
 #' @export
 
