@@ -59,7 +59,7 @@
 #------------------------
 # Joins tbl_Locations and tbl_Events tables and filters by park, year, and plot/visit type
 #------------------------
-joinLocEvent<-function(park="all", from=2006,to=2018, QAQC=FALSE, rejected=FALSE, panels=1:4,
+joinLocEvent<-function(park="all", from=2007,to=2019, QAQC=FALSE, rejected=FALSE, panels=1:4,
                        locType='VS', output='short', ...){
 
   loc2<-loc %>% mutate(Unit_Code=as.factor(str_sub(Unit_ID,1,4)))
@@ -97,6 +97,7 @@ joinLocEvent<-function(park="all", from=2006,to=2018, QAQC=FALSE, rejected=FALSE
   coloc1<-(2011:2014)
   coloc2<-(2015:2018)
   coloc3<-(2019:2022)
+  coloc4<-(2023:2026)
   ncbnc1<-(2008:2011)
   ncbnc2<-(2012:2015)
   ncbnc3<-(2016:2019)
@@ -108,14 +109,17 @@ joinLocEvent<-function(park="all", from=2006,to=2018, QAQC=FALSE, rejected=FALSE
   park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc1]<-"Cycle1"
   park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc2]<-"Cycle2"
   park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc3]<-"Cycle3"
+  park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc4]<-"Cycle4"
 
   park.ev4$cycle[park.ev4$Unit_Code %in% ncbn & park.ev4$Year %in% ncbnc1]<-"Cycle1"
   park.ev4$cycle[park.ev4$Unit_Code %in% ncbn & park.ev4$Year %in% ncbnc2]<-"Cycle2"
   park.ev4$cycle[park.ev4$Unit_Code %in% ncbn & park.ev4$Year %in% ncbnc3]<-"Cycle3"
+  park.ev4$cycle[park.ev4$Unit_Code %in% ncbn & park.ev4$Year %in% ncbnc4]<-"Cycle4"
 
   park.ev4$cycle[park.ev4$Unit_Code %in% midn & park.ev4$Year %in% cycle1]<-"Cycle1"
   park.ev4$cycle[park.ev4$Unit_Code %in% midn & park.ev4$Year %in% cycle2]<-"Cycle2"
   park.ev4$cycle[park.ev4$Unit_Code %in% midn & park.ev4$Year %in% cycle3]<-"Cycle3"
+  park.ev4$cycle[park.ev4$Unit_Code %in% midn & park.ev4$Year %in% cycle4]<-"Cycle4"
 
   park.ev5<-park.ev4 %>% filter(Year>=from & Year <=to) %>% droplevels()
 

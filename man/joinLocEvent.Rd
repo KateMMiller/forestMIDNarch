@@ -6,8 +6,8 @@
 \usage{
 joinLocEvent(
   park = "all",
-  from = 2006,
-  to = 2018,
+  from = 2007,
+  to = 2019,
   QAQC = FALSE,
   rejected = FALSE,
   panels = 1:4,
