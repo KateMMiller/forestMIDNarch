@@ -2,7 +2,7 @@
 #'
 #' @importFrom dplyr select mutate_at arrange
 #' @importFrom magrittr %>%
-#' @importFrom tidyr spread
+#' @importFrom tidyr spread gather
 #'
 #' @title joinStandData: compile stand data
 #'

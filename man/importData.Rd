@@ -4,8 +4,13 @@
 \alias{importData}
 \title{importData: Import tables directly from MIDN forest database}
 \usage{
-importData(type = c("DSN", "file"), odbc = "MIDNFVM", path = NA,
-  import_tables = c("all", "single"), table_name = NA)
+importData(
+  type = c("DSN", "file"),
+  odbc = "MIDNFVM",
+  path = NA,
+  import_tables = c("all", "single"),
+  table_name = NA
+)
 }
 \arguments{
 \item{type}{Select whether to use the default DSN to import data or a different database
