@@ -75,18 +75,12 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
   seed[,17:22][is.na(seed[,17:22])] <- 0
   seed$Cover <- as.numeric(seed$Cover)
 
-  seed2 <- if(height == 'ht15'){
-    seed %>% group_by(Event_ID,TSN) %>%
-      summarise(NumQuads = first(NumQuads), seed15.30m2 = sum(Seedlings_15_30cm)/NumQuads,
-      seed30.100m2 = sum(Seedlings_30_100cm)/NumQuads, seed100.150m2 = sum(Seedlings_100_150cm)/NumQuads,
-      seed150pm2 = sum(Seedlings_Above_150cm)/NumQuads, avg.cover = sum(Cover)/NumQuads)
-  } else if (height == 'all'){
-    seed %>% group_by(Event_ID,TSN) %>%
+  seed2 <- seed %>% group_by(Event_ID,TSN) %>%
       summarise(NumQuads = first(NumQuads), seed5.15m2 = sum(Seedlings_5_15cm)/NumQuads,
       seed15.30m2 = sum(Seedlings_15_30cm)/NumQuads, seed30.100m2 = sum(Seedlings_30_100cm)/NumQuads,
       seed100.150m2 = sum(Seedlings_100_150cm)/NumQuads, seed150pm2 = sum(Seedlings_Above_150cm)/NumQuads,
       avg.cover = sum(Cover)/NumQuads)
-  } # need to add a path for including 5-15 in summary below
+  #} # need to add a path for including 5-15 in summary below
 
   seed3 <- seed2 %>% mutate(seed.stock = (1*seed15.30m2 + 2*seed30.100m2 + 20*seed100.150m2 + 50*seed150pm2),
     seed.dens.m2 = seed15.30m2 + seed30.100m2 + seed100.150m2 + seed150pm2)
@@ -142,13 +136,15 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
   } else if (speciesType == 'all'){(regen4)
   }
 
-  regen5[,15:23][is.na(regen5[,15:23])] <- 0
+  regen5[,15:24][is.na(regen5[,15:24])] <- 0
 
   regen5 <- regen5 %>% mutate(stock = seed.stock + sap.stock) %>% select(-seed.stock, -sap.stock)
 
   regen6 <- if (units == 'sq.m'){
     regen5 %>%
-        mutate(seed15.30 = seed15.30m2,
+        mutate(
+          seed5.15 = seed5.15m2,
+          seed15.30 = seed15.30m2,
           seed30.100 = seed30.100m2,
           seed100.150 = seed100.150m2,
           seed150p = seed150pm2,
@@ -156,7 +152,9 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
           sap.den = sap.dens.m2)
     } else if (units == 'ha'){
     regen5 %>%
-      mutate(seed15.30 = seed15.30m2*10000,
+      mutate(
+        seed5.15 = seed5.15m2*10000,
+        seed15.30 = seed15.30m2*10000,
         seed30.100 = seed30.100m2*10000,
         seed100.150 = seed100.150m2*10000,
         seed150p = seed150pm2*10000,
@@ -164,7 +162,9 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
         sap.den = sap.dens.m2*10000)
     } else if (units == 'acres'){
     regen5 %>%
-      mutate(seed15.30 = seed15.30m2*4046.856,
+      mutate(
+        seed5.15 = seed5.15m2*4046.856,
+        seed15.30 = seed15.30m2*4046.856,
         seed30.100 = seed30.100m2*4046.856,
         seed100.150 = seed100.150m2*4046.856,
         seed150p = seed150pm2*4046.856,
@@ -172,12 +172,16 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
         sap.den = sap.dens.m2*4046.856)
     }
 
-  regen7 <- regen6 %>% select(Event_ID, TSN, Latin_Name, Common, Exotic, Canopy_Exclusion, seed15.30,
+  regen7 <- regen6 %>% select(Event_ID, TSN, Latin_Name, Common, Exotic, Canopy_Exclusion, seed5.15, seed15.30,
     seed30.100, seed100.150, seed150p, seed.den, sap.den, stock, avg.cover) %>% droplevels()
 
   regen8 <- merge(park.plots, regen7, by="Event_ID", all.x=T)
 
-  regen8[,18:25][is.na(regen8[,18:25])] <- 0
+  regen8[,18:26][is.na(regen8[,18:26])] <- 0
 
-  return(data.frame(regen8))
+  regen9 <- if(height != 'all'){
+    regen8 %>% select(-seed5.15)
+  } else {regen8}
+
+  return(data.frame(regen9))
 } # end of function
