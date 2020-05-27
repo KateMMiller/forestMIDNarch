@@ -8,7 +8,7 @@
 #' @description This function combines calculates CWD volume for each plot. Must run importData first.
 #' Note that plots in Deer Exclosures are not sampled for CWD and will not be returned.
 #'
-#'#' @param units Calculates CWD Volume based on different units.
+#' @param units Calculates CWD Volume based on different units.
 #' \describe{
 #' \item{"ha"}{Default. Returns CWD volume as cubic m/hectare}
 #' \item{"acres"}{Returns CWD volume as cubic ft/ acre}
