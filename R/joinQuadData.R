@@ -90,7 +90,7 @@ joinQuadData <- function(speciesType = c('all', 'native','exotic'), park = 'all'
     summarise(numQuadrats=first(numQuadrats),Cover=sum(Cover))%>%
     left_join(park.plots,.,by="Event_ID") %>% ungroup()
 
-  seed.wide<-seed2 %>% tidyr::spread(Quadrat, Cover, fill=0)  %>% select(-26) %>%
+  seed.wide<-seed2 %>% tidyr::spread(Quadrat, Cover, fill=0)  %>% #select(-26) %>%
     mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
   seed.wide<-seed.wide[,c(1:11,13,12,14:26)]
