@@ -2,7 +2,6 @@
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by between
 #' @importFrom magrittr %>%
-#' @importFrom lubridate year
 #' @importFrom stringr str_pad str_sub
 #'
 #' @description This function combines location and event data. Must run importData first.
@@ -87,8 +86,8 @@ joinLocEvent<-function(park="all", from=2007,to=2019, QAQC=FALSE, rejected=FALSE
 
   park.ev3<- park.ev2 %>% filter(Panel %in% panels) %>% droplevels()
 
-  park.ev4<- park.ev3 %>% mutate(Year=lubridate::year(Start_Date))
-
+  #park.ev4<- suppressWarnings(park.ev3 %>% mutate(Year=lubridate::year(Start_Date)))
+  park.ev3$Year <- format(as.Date(park.ev3$Start_Date, format = "%Y-%m-%d"), "%Y")
     # add cycles for MIDN/NCBN parks
   cycle1<-(2007:2010)
   cycle2<-(2011:2014)
@@ -105,7 +104,7 @@ joinLocEvent<-function(park="all", from=2007,to=2019, QAQC=FALSE, rejected=FALSE
   ncbn<-c("GEWA","SAHI","THST")
   midn<-c("APCO","BOWA","FRSP","GETT","HOFU","PETE","RICH","VAFO")
 
-  park.ev4<-park.ev4 %>% mutate(cycle=NA)
+  park.ev4<-park.ev3 %>% mutate(cycle=NA)
   park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc1]<-"Cycle1"
   park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc2]<-"Cycle2"
   park.ev4$cycle[park.ev4$Unit_Code=="COLO" & park.ev4$Year %in% coloc3]<-"Cycle3"
