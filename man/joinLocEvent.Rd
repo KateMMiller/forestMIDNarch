@@ -33,9 +33,9 @@ joinLocEvent(
 \item{"THST"}{Thomas Stone NHS only}
 \item{"VAFO"}{Valley Forge NHP only}}}
 
-\item{from}{Year to start analysis, ranging from 2007-2018}
+\item{from}{Year to start analysis, ranging from 2007-2019}
 
-\item{to}{Year to stop analysis, ranging from 2007-2018}
+\item{to}{Year to stop analysis, ranging from 2007-2019}
 
 \item{QAQC}{Allows you to remove or include QAQC events.
 \describe{
@@ -69,7 +69,7 @@ APCO_data <- joinLocEvent(park = 'APCO', from = 2015, to = 2018)
 # Select data from cycle 3
 cycle3 <- joinLocEvent(from = 2015, to = 2018) # all parks is default
 
-# Select data from plots that had a QA/QC event in ACAD in 2018
+# Select data from plots that had a QA/QC event in GETT in 2018
 GETT_data<-joinLocEvent(park = 'GETT', QAQC = T, from = 2018)
 QAQC_plots<-GETT_data$Plot_Name[which(GETT_data$Event_QAQC==TRUE)]
 GETT_QAQC<-GETT_data \%>\% filter(Plot_Name \%in\% QAQC_plots) \%>\% droplevels()
