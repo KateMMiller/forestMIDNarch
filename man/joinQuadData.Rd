@@ -28,7 +28,10 @@ joinQuadData(
 Returns a dataframe with cover class midpoints for each quadrat and includes guild for each species.
 }
 \description{
-This function combines quadrat species and tree seedling cover data with species names and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also includes woody vine species.
+This function combines quadrat species and tree seedling cover data with species names
+and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also
+includes woody vine species. Note that tree cover is included in avg.cover and avg.freq are from quadrat species data
+and avg.sd.cover and avd.sd.freq are from quadrat seedling data. Starting in 2019, tree seedlings are collected in both.
 }
 \examples{
 importData()

@@ -54,8 +54,10 @@ makeSppList<-function(speciesType=c('all', 'native', 'exotic'), park='all',
 
   trees1<-force(joinTreeData(park=park, from=from,to=to,QAQC=QAQC,locType=locType,
     output='short', status='live'))
+
   trees2<-trees1 %>% group_by(Event_ID,TSN,Latin_Name,Common) %>% summarise(tree.stems=length(DBH>10),
     tree.BAcm2=sum(BA_cm2)) %>% ungroup()
+
   trees3<-trees2 %>% select(Event_ID,TSN,tree.stems,tree.BAcm2)
 
   regen1<-force(joinRegenData(park=park, from=from,to=to,QAQC=QAQC,locType=locType,

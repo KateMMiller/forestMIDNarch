@@ -1,11 +1,14 @@
 #' @include joinLocEvent.R
 #' @title joinQuadData: compiles quadrat species data
 #'
-#' @importFrom dplyr select filter arrange mutate summarise group_by rename_at left_join
+#' @importFrom dplyr select filter arrange mutate summarise group_by left_join
 #' @importFrom magrittr %>%
 #' @importFrom tidyr spread
 #'
-#' @description This function combines quadrat species and tree seedling cover data with species names and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also includes woody vine species.
+#' @description This function combines quadrat species and tree seedling cover data with species names
+#' and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also
+#' includes woody vine species. Note that tree cover is included in avg.cover and avg.freq are from quadrat species data
+#' and avg.sd.cover and avd.sd.freq are from quadrat seedling data. Starting in 2019, tree seedlings are collected in both.
 #'
 #' @param speciesType Allows you to filter on native, exotic or include all species.
 #' \describe{
@@ -62,7 +65,8 @@ joinQuadData <- function(speciesType = c('all', 'native','exotic'), park = 'all'
 
   old.names<-names(quads2[,14:25])
   new.names<-c('A2','A5','A8','AA','B2','B5','B8','BB','C2','C5','C8','CC')
-  quads2<-quads2 %>% rename_at(vars(old.names), ~new.names)
+
+  colnames(quads2)<-c(names(quads2[1:13]), new.names)
 
   quads2[,c(14:25)][is.na(quads2[,c(14:25)])]<-0
   quads3<-quads2 %>% mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats) #%>% select(Event_ID:TSN,avg.cover)
@@ -91,13 +95,17 @@ joinQuadData <- function(speciesType = c('all', 'native','exotic'), park = 'all'
     left_join(park.plots,.,by="Event_ID") %>% ungroup()
 
   seed.wide<-seed2 %>% tidyr::spread(Quadrat, Cover, fill=0)  %>% #select(-26) %>%
-    mutate(avg.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
+    mutate(avg.sd.cover=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
   seed.wide<-seed.wide[,c(1:11,13,12,14:26)]
   seed.wide[,14:25][seed.wide[,14:25]>0]<-1
-  seed.wide<-seed.wide %>% mutate(avg.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
+  seed.wide<-seed.wide %>% mutate(avg.sd.freq=(A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats) %>%
+    select(Event_ID, cycle, TSN, avg.sd.cover, avg.sd.freq)
 
-  quad.comb<-rbind(quads3,seed.wide)
+  #quad.comb<-rbind(quads3,seed.wide)
+  intersect(names(quads3), names(seed.wide))
+  quad.comb <- merge(quads3, seed.wide, by=c("Event_ID", "cycle", "TSN"), all.x=T, all.y=T)
+
   quad.comb2<-merge(quad.comb,plants[,c('TSN',"Latin_Name","Common","Tree","Shrub","Vine","Graminoid","Herbaceous",
     "Fern_Ally","Exotic")],
     by="TSN", all.x=T)
