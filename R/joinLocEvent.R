@@ -58,7 +58,7 @@
 #------------------------
 # Joins tbl_Locations and tbl_Events tables and filters by park, year, and plot/visit type
 #------------------------
-joinLocEvent<-function(park="all", from=2007,to=2019, QAQC=FALSE, rejected=FALSE, panels=1:4,
+joinLocEvent<-function(park="all", from=2007, to=2019, QAQC=FALSE, rejected=FALSE, panels=1:4,
                        locType='VS', output='short', ...){
 
   loc2<-loc %>% mutate(Unit_Code=as.factor(str_sub(Unit_ID,1,4)))
@@ -69,17 +69,17 @@ joinLocEvent<-function(park="all", from=2007,to=2019, QAQC=FALSE, rejected=FALSE
   } else if (locType=='all') {(loc2)
   } else if (locType!='VS'|locType!='all') {stop("locType must either be 'VS' or 'all'")}
 
-  loc4<- if (rejected==FALSE) {filter(loc3, Rejected==F)
+  loc4<- if (rejected==FALSE) {filter(loc3, Rejected==FALSE)
   } else if (rejected==TRUE) {(loc3)
   } else {stop("rejected must be TRUE or FALSE")}
 
   loc5<- if (park=='all') {(loc4)
-  } else if (park %in% levels(loc4$Unit_Code)){filter(loc4,Unit_Code==park)
+  } else if (park %in% levels(loc4$Unit_Code)){filter(loc4,Unit_Code %in% park)
   } else {stop("park must be one of the factor levels of Unit_Code")}
 
   park.ev<-merge(loc5,event,by="Location_ID",all.x=T)
 
-  park.ev2<- if (QAQC==FALSE) {filter(park.ev, Event_QAQC==0)
+  park.ev2<- if (QAQC==FALSE) {filter(park.ev, Event_QAQC==FALSE)
   } else if (QAQC==TRUE) {(park.ev)
   } else {stop("QAQC must be TRUE or FALSE")}
 
