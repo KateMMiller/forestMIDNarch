@@ -48,7 +48,7 @@
 # Joins tbl_Trees and tbl_Tree_Data tables and filters by park, year, and plot/visit type
 #------------------------
 joinTreeData<-function(status = c('all','live','dead'), speciesType = c('all', 'native', 'exotic'), park = 'all',
-                       from = 2007, to = 2018, QAQC = FALSE, locType = 'VS', panels = 1:4, dist_m = NA, output, ...){
+                       from = 2007, to = 2019, QAQC = FALSE, locType = 'VS', panels = 1:4, dist_m = NA, output, ...){
 
   status <- match.arg(status)
   speciesType <- match.arg(speciesType)

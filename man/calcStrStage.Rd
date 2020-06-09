@@ -10,7 +10,7 @@ calcStrStage(
   locType = "VS",
   panels = 1:4,
   from = 2007,
-  to = 2018,
+  to = 2019,
   output,
   speciesType = c("all", "native", "exotic"),
   ...
@@ -46,9 +46,9 @@ calcStrStage(
 \item{panels}{Allows you to select individual panels from 1 to 4. Default is all 4 panels (1:4).
 If more than one panel is selected, specify by c(1,3), for example.}
 
-\item{from}{Year to start analysis, ranging from 2007-2018}
+\item{from}{Year to start analysis, ranging from 2007-2019}
 
-\item{to}{Year to stop analysis, ranging from 2007-2018}
+\item{to}{Year to stop analysis, ranging from 2007-2019}
 
 \item{speciesType}{Allows you to filter on native, exotic or include all species.
 \describe{

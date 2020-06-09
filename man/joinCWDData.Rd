@@ -8,7 +8,7 @@ joinCWDData(
   units = c("ha", "acres"),
   park = "all",
   from = 2007,
-  to = 2018,
+  to = 2019,
   QAQC = FALSE,
   locType = "VS",
   output,

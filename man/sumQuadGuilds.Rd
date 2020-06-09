@@ -8,7 +8,7 @@ sumQuadGuilds(
   speciesType = c("native", "exotic", "all"),
   park = "all",
   from = 2006,
-  to = 2018,
+  to = 2019,
   QAQC = FALSE,
   locType = "VS",
   output,

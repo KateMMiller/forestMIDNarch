@@ -10,7 +10,7 @@ joinRegenData(
   units = c("sq.m", "ha", "acres"),
   park = "all",
   from = 2007,
-  to = 2018,
+  to = 2019,
   QAQC = FALSE,
   locType = "VS",
   height = c("ht15", "all"),
@@ -47,12 +47,15 @@ joinRegenData(
 }}
 }
 \value{
-returns a dataframe with seedling and sapling densities, and stocking index
+returns a dataframe with seedling and sapling densities, stocking index,
+quadrat seedling cover and quadrat seedling frequency. Quadrat frequency is based on
+cover > 0 in a quadrat.
 }
 \description{
 This function combines seedling and sapling data, and calculates stocking index at the 1 sq. m level.
-Stocking index thresholds are 2 for areas with low deer, and 8 for areas with high deer.
-Must run importData first.
+Quadrat percent cover is also averaged across the quadrats, and only includes cover of seedling sized tree species
+(i.e. the original protocol method). Stocking index thresholds are 2 for areas with low deer, and 8 for areas
+with high deer. Must run importData first.
 }
 \examples{
 importCSV('./forest_csvs/')
