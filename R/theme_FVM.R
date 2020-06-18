@@ -5,7 +5,7 @@
 #' @description This function customizes a theme for plotting MIDN forest data, including removing the
 #' default panel grids from ggplot2 figures.
 #'
-#' @return This function must be used in conjunction with a gpplot object
+#' @return This function must be used in conjunction with a ggplot object
 #'
 #' @examples
 #' importData()
