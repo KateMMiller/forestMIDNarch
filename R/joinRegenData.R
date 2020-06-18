@@ -152,7 +152,7 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
      } else if (speciesType == 'all'){(regen4)
      }
 
-  regen5[,15:24][is.na(regen5[,15:24])] <- 0
+  regen5[,15:25][is.na(regen5[,15:25])] <- 0
 
   regen5 <- regen5 %>% mutate(stock = seed.stock + sap.stock) %>% select(-seed.stock, -sap.stock)
 
@@ -192,7 +192,7 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
                               seed5.15, seed15.30, seed30.100, seed100.150, seed150p,
                               seed.den, sap.den, stock, avg.cover, avg.freq) %>% droplevels()
 
-  regen8 <- merge(park.plots, regen7, by="Event_ID", all.x = TRUE, all.y = FALSE)
+  regen8 <- merge(park.plots, regen7, by="Event_ID", all.x = TRUE, all.y = TRUE)
 
   regen8[,18:26][is.na(regen8[,18:26])] <- 0
 
