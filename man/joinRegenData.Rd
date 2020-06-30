@@ -5,7 +5,7 @@
 \title{joinRegenData: compiles seedling and sapling data}
 \usage{
 joinRegenData(
-  speciesType = c("all", "native", "exotic"),
+  speciesType = c("all", "native", "native_noROBPSE", "exotic"),
   canopyForm = c("canopy", "all"),
   units = c("sq.m", "ha", "acres"),
   park = "all",
@@ -22,9 +22,10 @@ joinRegenData(
 \arguments{
 \item{speciesType}{Allows you to filter on native, exotic or include all species.
 \describe{
-\item{"all"}{Default. Returns all species.}
-\item{"native"}{Returns native species only}
-\item{"exotic"}{Returns exotic species only}
+\item{"all"}{Default. Returns all species}
+\item{"native"}{Returns native species only, including Robinia pseudoacacia}
+\item{"native_noROBPSE"}{Returns native species except Robinia pseudoacacia}
+\item{"exotic"}{Returns exotic species only, not including Robinia pseudoacacia}
 }}
 
 \item{canopyForm}{Allows you to filter on canopy species only or include all species.

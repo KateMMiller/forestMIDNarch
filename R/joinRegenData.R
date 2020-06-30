@@ -12,9 +12,10 @@
 #'
 #' @param speciesType Allows you to filter on native, exotic or include all species.
 #' \describe{
-#' \item{"all"}{Default. Returns all species.}
-#' \item{"native"}{Returns native species only}
-#' \item{"exotic"}{Returns exotic species only}
+#' \item{"all"}{Default. Returns all species}
+#' \item{"native"}{Returns native species only, including Robinia pseudoacacia}
+#' \item{"native_noROBPSE"}{Returns native species except Robinia pseudoacacia}
+#' \item{"exotic"}{Returns exotic species only, not including Robinia pseudoacacia}
 #' }
 #' @param canopyForm Allows you to filter on canopy species only or include all species.
 #' \describe{
@@ -55,7 +56,7 @@
 #------------------------
 # Joins quadrat and microplot tables and filters by park, year, and plot/visit type
 #------------------------
-joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm = c('canopy', 'all'),
+joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'exotic'), canopyForm = c('canopy', 'all'),
   units = c('sq.m', 'ha', 'acres'), park = 'all', from = 2007, to = 2019, QAQC = FALSE,
   locType = 'VS', height=c('ht15','all'), panels=1:4, output, ...){
 
@@ -69,6 +70,7 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
 
   park.plots <- park.plots %>% select(Location_ID, Event_ID, Unit_Code, Plot_Name, Plot_Number, X_Coord, Y_Coord,
                                       Panel, Year, Event_QAQC, cycle, Loc_Type)
+
 # Prepare the seedling data
 
   quad1 <- merge(park.plots, quadsamp[,1:14], by = 'Event_ID', all.x = TRUE)
@@ -143,12 +145,14 @@ joinRegenData <- function(speciesType = c('all', 'native', 'exotic'), canopyForm
   regen3 <- merge(regen2, plants[,c('TSN', 'Latin_Name', 'Common', 'Exotic', 'Canopy_Exclusion')],
                   by = 'TSN', all.x = TRUE, all.y = FALSE)
 
-  regen4 <- if(canopyForm == 'canopy'){filter(regen3, Canopy_Exclusion != 1)
+  regen4 <- if(canopyForm == 'canopy'){filter(regen3, Canopy_Exclusion == FALSE)
      } else if(canopyForm == 'all'){(regen3)
      }
 
   regen5 <- if (speciesType == 'native'){filter(regen4, Exotic == FALSE)
      } else if (speciesType == 'exotic'){filter(regen4, Exotic == TRUE)
+     } else if (speciesType == 'native_noROBPSE'){
+         filter(regen4, Exotic == FALSE, Latin_Name !="Robinia pseudoacacia")
      } else if (speciesType == 'all'){(regen4)
      }
 

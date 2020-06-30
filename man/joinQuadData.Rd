@@ -5,7 +5,7 @@
 \title{joinQuadData: compiles quadrat species data}
 \usage{
 joinQuadData(
-  speciesType = c("all", "native", "exotic"),
+  speciesType = c("all", "native", "native_noROBPSE", "exotic"),
   park = "all",
   from = 2007,
   to = 2019,
@@ -20,7 +20,8 @@ joinQuadData(
 \item{speciesType}{Allows you to filter on native, exotic or include all species.
 \describe{
 \item{"all"}{Default. Returns all species.}
-\item{"native"}{Returns native species only}
+\item{"native"}{Returns native species only, including Robinia pseudoacacia}
+\item{"native_noROBPSE"}{Returns native species except Robinia pseudoacacia}
 \item{"exotic"}{Returns exotic species only}
 }}
 }

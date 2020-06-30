@@ -14,7 +14,8 @@
 #' @param speciesType Allows you to filter on native, exotic or include all species.
 #' \describe{
 #' \item{"all"}{Default. Returns all species.}
-#' \item{"native"}{Returns native species only}
+#' \item{"native"}{Returns native species only, including Robinia pseudoacacia}
+#' \item{"native_noROBPSE"}{Returns native species except Robinia pseudoacacia}
 #' \item{"exotic"}{Returns exotic species only}
 #' }
 #'
@@ -38,8 +39,9 @@
 #------------------------
 # Joins quadrat tables and filters by park, year, and plot/visit type
 #------------------------
-joinQuadData <- function(speciesType = c('all', 'native','exotic'), park = 'all', from = 2007,
-                         to = 2019, QAQC = FALSE, locType = 'VS', panels = 1:4, output, ...){
+joinQuadData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'exotic'),
+                         park = 'all', from = 2007, to = 2019, QAQC = FALSE, locType = 'VS',
+                         panels = 1:4, output, ...){
 
   speciesType <- match.arg(speciesType)
 
@@ -97,9 +99,12 @@ joinQuadData <- function(speciesType = c('all', 'native','exotic'), park = 'all'
                       by = "TSN", all.x = TRUE)
 
   quads5 <- if (speciesType == 'native'){filter(quads4, Exotic == FALSE)
-    } else if (speciesType == 'exotic'){filter(quads4, Exotic == TRUE)
-    } else if (speciesType == 'all'){(quads4)
-    }
+  } else if (speciesType == 'exotic'){filter(quads4, Exotic == TRUE)
+  } else if (speciesType == 'native_noROBPSE'){
+    filter(quads4, Exotic == FALSE, Latin_Name !="Robinia pseudoacacia")
+  } else if (speciesType == 'all'){(quads4)
+  }
+
 
   quads6 <- quads5 %>% mutate(avg.cover = ifelse(TSN == -9999999951, 0, avg.cover),
                               avg.freq = ifelse(TSN == -9999999951, 0, avg.freq)) %>%
