@@ -81,7 +81,7 @@ joinQuadData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'ex
 
   quads2[ , new.names][is.na(quads2[ , new.names])] <- 0
   quads3 <- quads2 %>% mutate(avg.cover = (A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats) #%>% select(Event_ID:TSN,avg.cover)
-  quads3[ , c(new.names, "avg.cover")][quads3[ , c(new.names, "avg.cover")] > 0] <- 1
+  quads3[ , c(new.names)][quads3[ , c(new.names)] > 0] <- 1
   quads3 <- quads3 %>% mutate(avg.freq = (A2+A5+A8+AA+B2+B5+B8+BB+C2+C5+C8+CC)/numQuadrats)
 
   #intersect(names(park.plots), names(quads3))
