@@ -23,7 +23,11 @@
 
 theme_FVM <- function(){theme(panel.grid.major = element_blank(),
                               panel.grid.minor = element_blank(),
-                              panel.background = element_rect(color = 'black', fill = 'white'),
-                              strip.background = element_rect(color = 'black', fill ='grey'),
-                              legend.key = element_blank()
+                              panel.background = element_rect(color = '#696969', fill = 'white', size = 0.4),
+                              plot.background = element_blank(),
+                              strip.background = element_rect(color = '#696969', fill = 'grey90', size = 0.4),
+                              legend.key = element_blank(),
+                              axis.line.x = element_line(color = "#696969", size = 0.4),
+                              axis.line.y = element_line(color = "#696969", size = 0.4),
+                              axis.ticks = element_line(color = "#696969", size = 0.4)
 )}
