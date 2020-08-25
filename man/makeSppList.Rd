@@ -8,7 +8,7 @@ makeSppList(
   speciesType = c("all", "native", "exotic"),
   park = "all",
   from = 2007,
-  to = 2018,
+  to = 2019,
   QAQC = FALSE,
   panels = 1:4,
   locType = "VS",
@@ -28,7 +28,8 @@ makeSppList(
 Returns a dataframe with species list for each plot.
 }
 \description{
-This function creates a plot-level species list from live trees, microplots, quadrats, and additional species lists.
+This function creates a plot-level species list from live trees, microplots,
+quadrats, and additional species lists. This function only works for complete events and active plots.
 }
 \examples{
 importData()

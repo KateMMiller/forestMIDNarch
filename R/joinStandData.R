@@ -50,7 +50,7 @@
 #------------------------
 # Join stand table
 #------------------------
-joinStandData<-function(park='all', QAQC=FALSE, locType='VS', panels=1:4, from=2007, to=2018, output, ...){
+joinStandData<-function(park='all', QAQC=FALSE, locType='VS', panels=1:4, from=2007, to=2019, output, ...){
 
   park.plots<-force(joinLocEvent(park = park, from = from,to = to,QAQC = QAQC,
                                  locType = locType, panels = panels, output = 'short'))

@@ -8,12 +8,19 @@ joinCWDData(
   units = c("ha", "acres"),
   park = "all",
   from = 2007,
-  to = 2018,
+  to = 2019,
   QAQC = FALSE,
   locType = "VS",
   output,
   ...
 )
+}
+\arguments{
+\item{units}{Calculates CWD Volume based on different units.
+\describe{
+\item{"ha"}{Default. Returns CWD volume as cubic m/hectare}
+\item{"acres"}{Returns CWD volume as cubic ft/ acre}
+}}
 }
 \value{
 returns a dataframe with CWD volume for each plot, one with cubic m/ha and cubic ft/acre
@@ -21,12 +28,6 @@ returns a dataframe with CWD volume for each plot, one with cubic m/ha and cubic
 \description{
 This function combines calculates CWD volume for each plot. Must run importData first.
 Note that plots in Deer Exclosures are not sampled for CWD and will not be returned.
-
-#' @param units Calculates CWD Volume based on different units.
-\describe{
-\item{"ha"}{Default. Returns CWD volume as cubic m/hectare}
-\item{"acres"}{Returns CWD volume as cubic ft/ acre}
-}
 }
 \examples{
 importData() #imports using default odbc

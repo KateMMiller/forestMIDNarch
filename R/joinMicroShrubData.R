@@ -31,7 +31,7 @@
 # Joins microplot tables and filters by park, year, and plot/visit type
 #------------------------
 joinMicroShrubData <- function(speciesType = c('all', 'native','exotic'), numMicros = 3, park='all',
-                             from = 2007, to = 2018, QAQC = FALSE, locType = 'VS', panels = 1:4, output, ...){
+                             from = 2007, to = 2019, QAQC = FALSE, locType = 'VS', panels = 1:4, output, ...){
 
   speciesType <- match.arg(speciesType)
 

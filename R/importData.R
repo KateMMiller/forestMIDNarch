@@ -97,7 +97,11 @@ importData<- function(type = c('DSN','file'), odbc = 'MIDNFVM', path = NA,
   setTxtProgressBar(pb,7)
   assign("cwd", DBI::dbReadTable(db,"tbl_CWD_Transect_Data"),envir=.GlobalEnv)
   setTxtProgressBar(pb,8)
-  assign("plants", DBI::dbReadTable(db, "tlu_Plants"),envir=.GlobalEnv)
+  plants <- DBI::dbReadTable(db, "tlu_Plants")
+  plants$Exotic[plants$Latin_Name == "Robinia pseudoacacia"] <- FALSE
+  assign("plants", plants, envir=.GlobalEnv)
+  #assign("plants", DBI::dbReadTable(db, "tlu_Plants"),envir=.GlobalEnv)
+  plants$Exotic[plants$Latin_Name == "Robinia pseudoacacia"] <- FALSE
   setTxtProgressBar(pb,9)
   assign("saps", DBI::dbReadTable(db,"tbl_Microplot_Sapling_Data_MIDN"),envir=.GlobalEnv)
   setTxtProgressBar(pb,10)

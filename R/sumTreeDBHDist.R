@@ -4,6 +4,7 @@
 #'
 #'
 #' @importFrom dplyr select filter arrange mutate summarise group_by case_when
+#' @importFrom tidyr spread
 #' @importFrom magrittr %>%
 #'
 #' @description This function calculates DBH distribution by 10cm size classes. Must run importData first.

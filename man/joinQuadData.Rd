@@ -5,10 +5,10 @@
 \title{joinQuadData: compiles quadrat species data}
 \usage{
 joinQuadData(
-  speciesType = c("all", "native", "exotic"),
+  speciesType = c("all", "native", "native_noROBPSE", "exotic"),
   park = "all",
   from = 2007,
-  to = 2018,
+  to = 2019,
   QAQC = FALSE,
   locType = "VS",
   panels = 1:4,
@@ -20,15 +20,25 @@ joinQuadData(
 \item{speciesType}{Allows you to filter on native, exotic or include all species.
 \describe{
 \item{"all"}{Default. Returns all species.}
-\item{"native"}{Returns native species only}
+\item{"native"}{Returns native species only, including Robinia pseudoacacia}
+\item{"native_noROBPSE"}{Returns native species except Robinia pseudoacacia}
 \item{"exotic"}{Returns exotic species only}
 }}
 }
 \value{
-Returns a dataframe with cover class midpoints for each quadrat and includes guild for each species.
+Returns a dataframe with average quadrat cover and quadrat frequency for each species
+detected in the quadrats species section of the protocol. Starting in 2019 all woody species
+were estimated for percent cover and all life stages were lumped into one percent cover estimate.
+The new_2019 column indicates whether a species was recorded in avg.cover and avg.freq because
+of the protocol change in 2019. Seedling-sized tree species will continue to get percent cover
+estimates for 2019-2022 to maintain protocol overlap, and these data are covered in joinRegenData().
 }
 \description{
-This function combines quadrat species and tree seedling cover data with species names and allows you to filter on species types, park, years, and visit type. Note that the Shrub guild also includes woody vine species.
+This function combines quadrat species cover data with species names
+and allows you to filter on species types, park, years, and visit type. Note that the
+Shrub guild also includes woody vine species. Note that quadrat seedling data, including
+percent cover and quadrat frequency of tree species that are seedling sized are reported
+in joinRegenData and not summarized here.
 }
 \examples{
 importData()

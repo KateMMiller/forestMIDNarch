@@ -30,8 +30,8 @@
 #' \item{"THST"}{Thomas Stone NHS only}
 #' \item{"VAFO"}{Valley Forge NHP only}}
 #'
-#' @param from Year to start analysis, ranging from 2007-2018
-#' @param to Year to stop analysis, ranging from 2007-2018
+#' @param from Year to start analysis, ranging from 2007-2019
+#' @param to Year to stop analysis, ranging from 2007-2019
 #'
 #' @param QAQC Allows you to remove or include QAQC events.
 #' \describe{
@@ -66,7 +66,7 @@
 # Join tree data
 #------------------------
 calcStrStage<-function(park = 'all', QAQC = FALSE, locType = 'VS', panels = 1:4,
-                       from = 2007, to = 2018, output, speciesType = c('all', 'native', 'exotic'), ...){
+                       from = 2007, to = 2019, output, speciesType = c('all', 'native', 'exotic'), ...){
 
   park.plots <- force(joinLocEvent(park = park, from = from, to = to, QAQC = QAQC,
                                  locType = locType, panels = panels, output = 'short'))

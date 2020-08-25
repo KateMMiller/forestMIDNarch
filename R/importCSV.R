@@ -31,7 +31,10 @@ importCSV<- function(path=NA){
   setTxtProgressBar(pb,7)
   assign("cwd",read.csv(paste0(path,"tbl_CWD_Transect_Data.csv")), envir=.GlobalEnv)
   setTxtProgressBar(pb,8)
-  assign("plants", read.csv(paste0(path, "tlu_Plants.csv")), envir=.GlobalEnv)
+  plants <- read.csv(paste0(path, "tlu_Plants.csv"))
+  plants$Exotic[plants$Latin_Name == "Robinia pseudoacacia"] <- FALSE
+  assign("plants", plants, envir=.GlobalEnv)
+  #assign("plants", read.csv(paste0(path, "tlu_Plants.csv")), envir=.GlobalEnv)
   setTxtProgressBar(pb,9)
   assign("saps", read.csv(paste0(path, "tbl_Microplot_Sapling_Data_MIDN.csv")), envir=.GlobalEnv)
   setTxtProgressBar(pb,10)

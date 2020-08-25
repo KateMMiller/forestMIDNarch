@@ -10,7 +10,7 @@ joinStandData(
   locType = "VS",
   panels = 1:4,
   from = 2007,
-  to = 2018,
+  to = 2019,
   output,
   ...
 )

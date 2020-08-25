@@ -29,7 +29,7 @@
 #------------------------
 # Joins quadrat tables and filters by park, year, and plot/visit type
 #------------------------
-sumQuadGuilds<-function(speciesType=c('native','exotic','all'), park='all',from=2006, to=2018, QAQC=FALSE, locType='VS', output,...){
+sumQuadGuilds<-function(speciesType=c('native','exotic','all'), park='all',from=2006, to=2019, QAQC=FALSE, locType='VS', output,...){
   if(!requireNamespace("tidyr", quietly = TRUE)){
     stop("Package 'tidyr' needed for this function to work. Please install it.", call. = FALSE)
   }
