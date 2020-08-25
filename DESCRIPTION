@@ -33,6 +33,7 @@ Collate:
     'joinRegenData.R'
     'makeSppList.R'
     'sumQuadGuilds.R'
+    'sumSapDBHDist.R'
     'sumTreeDBHDist.R'
     'theme_FVM.R'
     'treeMapPrep.R'
