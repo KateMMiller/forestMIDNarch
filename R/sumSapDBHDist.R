@@ -19,6 +19,7 @@
 #' \describe{
 #' \item{"all"}{Returns all species, including low canopy species.}
 #' \item{"canopy"}{Default. Returns canopy-forming species only}
+#' }
 #'
 #' @param units Allows you to choose which metric to calculate: basal area or stem density
 #' \describe{

@@ -26,6 +26,12 @@ sumSapDBHDist(
 \item{"exotic"}{Returns exotic species only}
 }}
 
+\item{canopyForm}{Allows you to filter on canopy species only or include all species.
+\describe{
+\item{"all"}{Returns all species, including low canopy species.}
+\item{"canopy"}{Default. Returns canopy-forming species only}
+}}
+
 \item{units}{Allows you to choose which metric to calculate: basal area or stem density
 \describe{
 \item{"density"}{Default. Returns stems/ha}
