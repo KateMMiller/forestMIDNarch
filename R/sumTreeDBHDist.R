@@ -23,10 +23,10 @@
 #' \item{"exotic"}{Returns exotic species only}
 #' }
 #'
-#'@param units Allows you to choose which metric to calculate: basal area or stem density
-#'\describe{
-#'\item{"density"}{Default. Returns stems/ha}
-#'\item{"ba"}{Returns basal area in sq.m/ha}
+#' @param units Allows you to choose which metric to calculate: basal area or stem density
+#' \describe{
+#' \item{"density"}{Default. Returns stems/ha}
+#' \item{"ba"}{Returns basal area in sq.m/ha}
 #' }
 #'
 #' @param dist_m Filter trees by a distance that is less than or equal to the specified distance in meters
