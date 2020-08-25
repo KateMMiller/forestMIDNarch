@@ -1,7 +1,7 @@
 Package: forestMIDN
 Type: Package
 Title: Package for importing, joining and querying MIDN forest database tables
-Version: 0.1.3
+Version: 0.1.4
 Author: Kate Miller
 Maintainer: Kate Miller <kathryn_miller@nps.gov>
 Description: This package contains functions that import database tables from the MIDN forest backend using odbc (must use 32-bit R for import), that join tables together and that filter by park, year, location type and visit type.
@@ -32,6 +32,7 @@ Collate:
     'joinRegenData.R'
     'makeSppList.R'
     'sumQuadGuilds.R'
+    'sumSapDBHDist.R'
     'sumTreeDBHDist.R'
     'theme_FVM.R'
     'treeMapPrep.R'
