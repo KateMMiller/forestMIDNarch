@@ -28,12 +28,6 @@
 #' \item{"ha"}{Returns seedling and sapling densities per hectare}
 #' \item{"acres"}{Returns densities per acre}
 #'}
-#' @param height Determines whether all height classes are included, or just >15cm seedlings.
-#' \describe{
-#' \item{"ht15"}{Default. Returns seedlings >=15cm and all saplings.}
-#' \item{"all"}{Returns all seedlings and saplings, including 5-15cm seedlings in VAFO.}
-#'}
-#'
 #'
 #' @return returns a dataframe with seedling and sapling densities, stocking index,
 #' quadrat seedling cover and quadrat seedling frequency. Quadrat frequency is based on
@@ -46,7 +40,7 @@
 #' regen_data <- joinRegenData(canopyForm = 'all', from = 2015, to = 2018)
 #'
 #' # compile regen data for canopy-forming (default), native species of all size classes in VAFO for all years
-#' VAFO_regen <- joinRegenData(park = 'VAFO', speciesType = 'native', height = 'all')
+#' VAFO_regen <- joinRegenData(park = 'VAFO', speciesType = 'native')
 #'
 #' # Compile seedling and sapling densities as stems/ha for all parks in most recent survey
 #' regen_data <- joinRegenData(units = 'ha', from = 2015, to = 2018)
@@ -58,12 +52,11 @@
 #------------------------
 joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'exotic'), canopyForm = c('canopy', 'all'),
   units = c('sq.m', 'ha', 'acres'), park = 'all', from = 2007, to = 2019, QAQC = FALSE,
-  locType = 'VS', height=c('ht15','all'), panels=1:4, output, ...){
+  locType = 'VS', panels=1:4, output, ...){
 
   speciesType <- match.arg(speciesType)
   canopyForm <- match.arg(canopyForm)
   units <- match.arg(units)
-  height <- match.arg(height)
 
   park.plots <- force(joinLocEvent(park = park, from = from, to = to, QAQC = QAQC, locType = locType,
                                  rejected = F, panels = panels, output='verbose'))
@@ -142,7 +135,10 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
   regen1 <- merge(park.plots, seed3, by = 'Event_ID', all.x = TRUE, all.y = FALSE)
   regen2 <- merge(regen1, saps7[,c("Event_ID","TSN","sap.dens.m2","sap.stock")],
                   by = c("Event_ID", "TSN"), all.x = TRUE, all.y = TRUE)
-  regen3 <- merge(regen2, plants[,c('TSN', 'Latin_Name', 'Common', 'Exotic', 'Canopy_Exclusion')],
+  regen3 <- merge(regen2[,c("Event_ID", "TSN", "avg.cover", "avg.freq",
+                            "seed15.30m2", "seed30.100m2", "seed100.150m2", "seed150pm2",
+                            "seed.dens.m2", "sap.dens.m2", "seed.stock", "sap.stock")],
+                  plants[,c('TSN', 'Latin_Name', 'Common', 'Exotic', 'Canopy_Exclusion')],
                   by = 'TSN', all.x = TRUE, all.y = FALSE)
 
   regen4 <- if(canopyForm == 'canopy'){filter(regen3, Canopy_Exclusion == FALSE)
@@ -156,14 +152,13 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
      } else if (speciesType == 'all'){(regen4)
      }
 
-  regen5[,15:25][is.na(regen5[,15:25])] <- 0
+  regen5[,3:12][is.na(regen5[,3:12])] <- 0
 
   regen5 <- regen5 %>% mutate(stock = seed.stock + sap.stock) %>% select(-seed.stock, -sap.stock)
 
   regen6 <- if (units == 'sq.m'){
     regen5 %>%
         mutate(
-          seed5.15 = seed5.15m2,
           seed15.30 = seed15.30m2,
           seed30.100 = seed30.100m2,
           seed100.150 = seed100.150m2,
@@ -173,7 +168,6 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
     } else if (units == 'ha'){
     regen5 %>%
       mutate(
-        seed5.15 = seed5.15m2*10000,
         seed15.30 = seed15.30m2*10000,
         seed30.100 = seed30.100m2*10000,
         seed100.150 = seed100.150m2*10000,
@@ -183,7 +177,6 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
     } else if (units == 'acres'){
     regen5 %>%
       mutate(
-        seed5.15 = seed5.15m2*4046.856,
         seed15.30 = seed15.30m2*4046.856,
         seed30.100 = seed30.100m2*4046.856,
         seed100.150 = seed100.150m2*4046.856,
@@ -193,16 +186,12 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
     }
 
   regen7 <- regen6 %>% select(Event_ID, TSN, Latin_Name, Common, Exotic, Canopy_Exclusion,
-                              seed5.15, seed15.30, seed30.100, seed100.150, seed150p,
+                              seed15.30, seed30.100, seed100.150, seed150p,
                               seed.den, sap.den, stock, avg.cover, avg.freq) %>% droplevels()
 
   regen8 <- merge(park.plots, regen7, by="Event_ID", all.x = TRUE, all.y = TRUE)
 
   regen8[,18:26][is.na(regen8[,18:26])] <- 0
 
-  regen9 <- if(height != 'all'){
-    regen8 %>% select(-seed5.15)
-  } else {regen8}
-
-  return(data.frame(regen9))
+  return(data.frame(regen8))
 } # end of function

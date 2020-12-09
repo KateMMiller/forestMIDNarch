@@ -13,7 +13,6 @@ joinRegenData(
   to = 2019,
   QAQC = FALSE,
   locType = "VS",
-  height = c("ht15", "all"),
   panels = 1:4,
   output,
   ...
@@ -40,12 +39,6 @@ joinRegenData(
 \item{"ha"}{Returns seedling and sapling densities per hectare}
 \item{"acres"}{Returns densities per acre}
 }}
-
-\item{height}{Determines whether all height classes are included, or just >15cm seedlings.
-\describe{
-\item{"ht15"}{Default. Returns seedlings >=15cm and all saplings.}
-\item{"all"}{Returns all seedlings and saplings, including 5-15cm seedlings in VAFO.}
-}}
 }
 \value{
 returns a dataframe with seedling and sapling densities, stocking index,
@@ -65,7 +58,7 @@ importCSV('./forest_csvs/')
 regen_data <- joinRegenData(canopyForm = 'all', from = 2015, to = 2018)
 
 # compile regen data for canopy-forming (default), native species of all size classes in VAFO for all years
-VAFO_regen <- joinRegenData(park = 'VAFO', speciesType = 'native', height = 'all')
+VAFO_regen <- joinRegenData(park = 'VAFO', speciesType = 'native')
 
 # Compile seedling and sapling densities as stems/ha for all parks in most recent survey
 regen_data <- joinRegenData(units = 'ha', from = 2015, to = 2018)
