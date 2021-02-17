@@ -1,4 +1,5 @@
-# forestMIDN
+# forestMIDNarch
+This package was originally called forestMIDN and was designed to connect with the original Access-based MIDN forest backend database. It is now being archived and forestMIDN is being updated to work with the new SQL-based backend. 
 
 <h3>Package for importing, joining and querying MIDN forest database tables</h3>
 
