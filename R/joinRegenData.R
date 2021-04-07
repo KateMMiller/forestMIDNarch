@@ -69,7 +69,7 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
   quad1 <- merge(park.plots, quadsamp[,1:14], by = 'Event_ID', all.x = TRUE)
   quad1$NumQuads <- rowSums(quad1[,14:25])
 
-  seed <- merge(quad1[,c(1:12,26)], sdlg[,c(1:4,6:12)], by = "Event_ID", all.x = T)
+  seed <- merge(quad1[,c(1:12,26)], sdlg[,c(1:12)], by = "Event_ID", all.x = T)
   seed[,17:22][is.na(seed[,17:22])] <- 0
   seed$Cover <- as.numeric(seed$Cover)
   seed$freq <- ifelse(!is.na(seed$Cover) & seed$Cover>0, 1, 0)
@@ -77,7 +77,6 @@ joinRegenData <- function(speciesType = c('all', 'native', 'native_noROBPSE', 'e
 
   seed2 <- seed %>% group_by(Event_ID,TSN) %>%
                     summarise(NumQuads = first(NumQuads),
-                              seed5.15m2 = sum(Seedlings_5_15cm)/NumQuads,
                               seed15.30m2 = sum(Seedlings_15_30cm)/NumQuads,
                               seed30.100m2 = sum(Seedlings_30_100cm)/NumQuads,
                               seed100.150m2 = sum(Seedlings_100_150cm)/NumQuads,
